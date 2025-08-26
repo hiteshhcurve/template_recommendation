@@ -3,16 +3,6 @@ import { useState, useEffect } from "react";
 const Search = ({ setTemplates }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (searchQuery.trim() !== "") {
-        searchTemps(searchQuery);
-      }
-    }, 500);
-
-    return () => clearTimeout(delayDebounce);
-  }, [searchQuery]);
-
   const searchTemps = async (query) => {
     try {
       const res = await fetch(
@@ -36,13 +26,22 @@ const Search = ({ setTemplates }) => {
   return (
     <div className="search-container">
       <div className="search-input-wrapper">
-        <input
-          type="text"
-          placeholder="Search templates by category, name, or tags..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-        />
+        <form
+          action=""
+          id="searchForm"
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchTemps(searchQuery.trim());
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Search templates by category, name, or tags..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="search-input"
+          />
+        </form>
       </div>
     </div>
   );

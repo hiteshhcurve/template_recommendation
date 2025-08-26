@@ -7,7 +7,12 @@ const Card = ({ template }) => {
   return (
     <div className="template-card">
       <div className="card-image-container">
-        <img src={thumbnail || null} alt={title} className="card-image" />
+        <img
+          src={thumbnail || null}
+          alt={title}
+          className="card-image"
+          loading="lazy"
+        />
       </div>
 
       <div className="card-header">
