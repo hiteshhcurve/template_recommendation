@@ -1,6 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
-const Search = ({ setTemplates }) => {
+const Search = ({ setTemplates, setLoading }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const searchTemps = async (query) => {
@@ -18,6 +20,7 @@ const Search = ({ setTemplates }) => {
 
       const json = await res.json();
       setTemplates(json.data);
+      setLoading(false);
     } catch (e) {
       console.error(e);
     }
@@ -31,16 +34,20 @@ const Search = ({ setTemplates }) => {
           id="searchForm"
           onSubmit={(e) => {
             e.preventDefault();
+            setLoading(true);
             searchTemps(searchQuery.trim());
           }}
         >
           <input
             type="text"
-            placeholder="Search templates by category, name, or tags..."
+            placeholder="Search templates by name, tags, client or category..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="search-input"
           />
+          <button type="submit" className="search-btn">
+            <FontAwesomeIcon icon={faSearch} className="search-icon" />
+          </button>
         </form>
       </div>
     </div>

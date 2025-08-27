@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import Header from "./components/header";
 import Showcase from "./components/showcase";
+import Loader from "./components/Loader";
 import "./App.scss";
 
 const App = () => {
   const [templates, setTemplates] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [clientLoaded, setClientLoaded] = useState(false);
 
   useEffect(() => {
     fetchTemplates();
@@ -47,7 +47,6 @@ const App = () => {
       }
       const json = await res.json();
 
-      setClientLoaded(true);
       console.log("Client info loaded");
     } catch (e) {
       setError(e);
@@ -56,12 +55,12 @@ const App = () => {
 
   return (
     <div className="app">
-      <Header setTemplates={setTemplates} />
-      <nav className="navigation">
+      <Header setTemplates={setTemplates} setLoading={setLoading} />
+      {/* <nav className="navigation">
         <div className="container">
           <div className="nav-content">
             <div className="category-buttons">
-              {/* {categories.map((category) => (
+              {categories.map((category) => (
                 <button
                   key={category.value}
                   onClick={() => setSelectedCategory(category.value)}
@@ -71,11 +70,11 @@ const App = () => {
                 >
                   {category.label}
                 </button>
-              ))} */}
+              ))}
             </div>
 
             <div className="sort-container">
-              {/* <select
+              <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
                 className="sort-select"
@@ -85,45 +84,21 @@ const App = () => {
                     {option.label}
                   </option>
                 ))}
-              </select> */}
+              </select>
             </div>
           </div>
         </div>
-      </nav>
+      </nav> */}
 
       <main className="main-content">
         <div className="container">
-          {/* Results Header */}
-          {/* <div className="results-header">
-            <h2 className="results-title">
-              {searchQuery
-                ? `Search results for "${searchQuery}"`
-                : "Recommended Templates"}
-            </h2>
-            <p className="results-count">
-              {filteredTemplates.length} template
-              {filteredTemplates.length !== 1 ? "s" : ""} found
-            </p>
-          </div> */}
-
           {loading ? (
-            <p>Loading...</p>
+            <Loader size="lg" color="#f97316" />
           ) : error ? (
             <h1>{error}</h1>
           ) : (
             <Showcase data={templates} />
           )}
-
-          {/* No Results */}
-          {/* {filteredTemplates.length === 0 && (
-            <div className="no-results">
-              <Search className="no-results-icon" />
-              <h3 className="no-results-title">No templates found</h3>
-              <p className="no-results-text">
-                Try adjusting your search terms or category filters
-              </p>
-            </div>
-          )} */}
         </div>
       </main>
     </div>

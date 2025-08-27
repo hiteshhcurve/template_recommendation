@@ -80,36 +80,54 @@ body {
   }
 
   .search-input-wrapper {
-    position: relative;
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 1rem;
-    height: 1rem;
-    color: var(--text-muted);
-  }
-
-  .search-input {
-    width: 100%;
-    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
     border: 1px solid var(--border);
     border-radius: 0.5rem;
     background-color: var(--surface);
-    font-size: 0.875rem;
-    transition: all 0.2s ease;
 
-    &:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.1);
+    #searchForm {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    &::placeholder {
-      color: var(--text-muted);
+    .search-btn {
+      padding: 8px;
+      margin: 0.25rem;
+      border: none;
+      background-color: var(--accent-color);
+      color: white;
+      border-radius: 0.5rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        cursor: pointer;
+        background-color: var(--accent-hover);
+      }
+    }
+
+    .search-icon {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 1.5rem;
+      font-size: 0.875rem;
+      outline: none;
+      border: none;
+      background-color: transparent;
+      transition: all 0.2s ease;
+      color: var(--text-primary);
+
+      &::placeholder {
+        color: var(--text-muted);
+      }
+    }
+
+    &:focus-within {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.1);
     }
   }
 
@@ -460,5 +478,26 @@ body {
 
   .template-grid {
     gap: 1rem;
+  }
+}
+
+// Loader Styles
+@keyframes morph {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+    border-radius: 4px;
+  }
+  25% {
+    transform: scale(1.2) rotate(45deg);
+    border-radius: 50%;
+  }
+  50% {
+    transform: scale(0.8) rotate(90deg);
+    border-radius: 4px;
+  }
+  75% {
+    transform: scale(1.1) rotate(135deg);
+    border-radius: 50%;
   }
 }
