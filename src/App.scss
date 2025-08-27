@@ -337,6 +337,7 @@ body {
       font-size: 0.875rem;
       line-height: 1.4;
       display: -webkit-box;
+      line-clamp: 2;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -500,4 +501,34 @@ body {
     transform: scale(1.1) rotate(135deg);
     border-radius: 50%;
   }
+}
+
+// Pagination Styles
+.pagination-container {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.pagination-link {
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}
+
+.page-info {
+  color: #4b5563;
+  margin: 0 0.5rem;
 }
