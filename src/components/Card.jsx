@@ -1,5 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-regular-svg-icons";
+import Button from "./Button";
 
 const Card = ({ template }) => {
   const { title, desc, ctr, thumbnail, meta_tags } = template;
@@ -36,10 +35,7 @@ const Card = ({ template }) => {
           ""
         )}
 
-        <button className="view-btn">
-          <FontAwesomeIcon icon={faEye} />
-          View Template
-        </button>
+        <Button text="View Template" icon={true} type={"button"} />
       </div>
     </div>
   );
