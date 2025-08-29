@@ -1,13 +1,18 @@
 import Button from "./Button";
 
 const Card = ({ template }) => {
-  const { title, desc, ctr, thumbnail, meta_tags } = template;
+  const { title, desc, ctr, thumbnail, meta_tags, videos_images } = template;
+
+  const imageLink =
+    videos_images !== undefined
+      ? JSON.parse(videos_images.replace(/'/g, '"'))[1]
+      : thumbnail;
 
   return (
     <div className="template-card">
       <div className="card-image-container">
         <img
-          src={thumbnail || null}
+          src={imageLink || null}
           alt={title}
           className="card-image"
           loading="lazy"

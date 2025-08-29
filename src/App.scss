@@ -243,6 +243,14 @@ body {
 }
 
 // Template Grid Styles
+.template-header {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
 .template-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

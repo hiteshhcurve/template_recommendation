@@ -1,16 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import GlobalContext from "../context/GlobalContext";
 import MultiSelect from "./MultiSelect";
 import Button from "./Button";
 
-const FilterModal = ({ isOpen, onClose, setTemplates, setLoading }) => {
-  const [selectedClients, setSelectedClients] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+const FilterModal = ({ isOpen, onClose }) => {
   const [clients, setClients] = useState(null);
   const [tags, setTags] = useState(null);
   const [categories, setCategories] = useState(null);
   const [modLoading, setModLoading] = useState(true);
   const [modError, setModError] = useState("");
+
+  const {
+    selectedClients,
+    selectedCategories,
+    selectedTags,
+    setTemplates,
+    setLoading,
+    setFiltersEnabled,
+    setSearchQuery,
+    setSelectedClients,
+    setSelectedCategories,
+    setSelectedTags,
+  } = useContext(GlobalContext);
 
   useEffect(() => {
     if (isOpen) {
@@ -48,6 +59,18 @@ const FilterModal = ({ isOpen, onClose, setTemplates, setLoading }) => {
     };
     onClose();
     setLoading(true);
+    setSearchQuery("");
+
+    if (
+      selectedCategories.length > 0 ||
+      selectedClients.length > 0 ||
+      selectedTags.length > 0
+    ) {
+      setFiltersEnabled(true);
+    } else {
+      setFiltersEnabled(false);
+    }
+
     try {
       const res = await fetch(
         "https://selfserve.hockeycurve.com/selfservev2_staging/apply_filters",

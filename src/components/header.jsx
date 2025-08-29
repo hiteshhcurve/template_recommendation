@@ -2,10 +2,9 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import FilterModal from "./FilterModal";
-
 import Search from "./Search";
 
-const Header = ({ setTemplates, setLoading }) => {
+const Header = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
 
   return (
@@ -17,7 +16,7 @@ const Header = ({ setTemplates, setLoading }) => {
               <h1 className="logo">Template Finder</h1>
             </div>
 
-            <Search setTemplates={setTemplates} setLoading={setLoading} />
+            <Search />
 
             <div className="header-right">
               <button
@@ -35,8 +34,6 @@ const Header = ({ setTemplates, setLoading }) => {
       <FilterModal
         isOpen={isFiltersModalOpen}
         onClose={() => setIsFiltersModalOpen(false)}
-        setTemplates={setTemplates}
-        setLoading={setLoading}
       />
     </>
   );
