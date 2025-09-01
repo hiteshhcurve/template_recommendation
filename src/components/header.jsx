@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 import FilterModal from "./FilterModal";
 import Search from "./Search";
 
@@ -13,7 +14,15 @@ const Header = () => {
         <div className="container">
           <div className="header-content">
             <div className="header-left">
-              <h1 className="logo">Template Finder</h1>
+              <div className="logo">
+                <Link to="/" className="home-link">
+                  <img
+                    src="https://s.hcurvecdn.com/selfserve_v2/images/f_logo.webp"
+                    alt="HC Logo"
+                    className="logo-img"
+                  />
+                </Link>
+              </div>
             </div>
 
             <Search />

@@ -3,8 +3,8 @@
 
 // Color Variables
 :root {
-  --primary-color: #0f766e;
-  --primary-hover: #0d5d56;
+  --primary-color: #118ae6;
+  --primary-hover: #0d6eb8;
   --accent-color: #f97316;
   --accent-hover: #ea580c;
   --background: #ffffff;
@@ -67,11 +67,24 @@ body {
   }
 
   .logo {
-    font-family: "Montserrat", sans-serif;
-    font-size: 1.5rem;
-    font-weight: 900;
-    color: var(--primary-color);
-    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+
+    .logo-img {
+      width: 180px;
+      margin-right: 0.5rem;
+    }
+
+    .logo-txt {
+      font-family: "Montserrat", sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--primary-color);
+      margin: 0;
+    }
   }
 
   .search-container {
