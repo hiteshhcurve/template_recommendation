@@ -1,4 +1,5 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 const GlobalContext = createContext();
 
@@ -12,10 +13,30 @@ export const GlobalProvider = ({ children }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
 
+  const isFirstRun = useRef(true);
+
+  const location = useLocation();
+
   useEffect(() => {
-    fetchTemplates();
-    fetchClientInfo();
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      fetchTemplates();
+      fetchClientInfo();
+    }
   }, []);
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      if (!isFirstRun.current) {
+        setLoading(true);
+        searchTemps();
+        setSearchQuery("");
+        setSelectedClients([]);
+        setSelectedCategories([]);
+        setSelectedTags([]);
+      }
+    }
+  }, [location.pathname]);
 
   const fetchTemplates = async () => {
     try {

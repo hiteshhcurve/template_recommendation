@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import GlobalContext from "../context/GlobalContext";
@@ -6,6 +7,8 @@ import GlobalContext from "../context/GlobalContext";
 const Search = () => {
   const [inputValue, setInputValue] = useState("");
   const { setSearchQuery, setLoading, searchTemps } = useContext(GlobalContext);
+
+  const navigate = useNavigate();
 
   return (
     <div className="search-container">
@@ -15,6 +18,7 @@ const Search = () => {
           id="searchForm"
           onSubmit={(e) => {
             e.preventDefault();
+            navigate("/search");
             setLoading(true);
             setSearchQuery(inputValue.trim());
             searchTemps(inputValue.trim());

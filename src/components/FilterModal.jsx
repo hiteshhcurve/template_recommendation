@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import GlobalContext from "../context/GlobalContext";
 import MultiSelect from "./MultiSelect";
 import Button from "./Button";
@@ -22,6 +23,8 @@ const FilterModal = ({ isOpen, onClose }) => {
     setSelectedCategories,
     setSelectedTags,
   } = useContext(GlobalContext);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
@@ -58,6 +61,7 @@ const FilterModal = ({ isOpen, onClose }) => {
       tags: selectedTags,
     };
     onClose();
+    navigate("/filter");
     setLoading(true);
     setSearchQuery("");
 
