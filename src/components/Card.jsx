@@ -1,7 +1,7 @@
 import Button from "./Button";
 
 const Card = ({ template }) => {
-  const { title, desc, ctr, thumbnail, meta_tags, videos_images } = template;
+  const { title, desc, thumbnail, meta_tags, videos_images } = template;
 
   const imageLink =
     videos_images !== undefined
@@ -24,7 +24,6 @@ const Card = ({ template }) => {
           <h3 className="card-title">{title}</h3>
         </div>
         <p className="card-description">{desc}</p>
-        <p className="card-ctr">Avg CTR: {ctr}</p>
       </div>
 
       <div className="card-content">
@@ -40,7 +39,12 @@ const Card = ({ template }) => {
           ""
         )}
 
-        <Button text="View Template" icon={true} type={"button"} />
+        <Button
+          text="View Template"
+          icon={true}
+          type={"button"}
+          disabled={true}
+        />
       </div>
     </div>
   );

@@ -18,11 +18,11 @@ export const GlobalProvider = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false;
-      fetchTemplates();
-      fetchClientInfo();
-    }
+    // if (isFirstRun.current) {
+    isFirstRun.current = false;
+    fetchTemplates();
+    fetchClientInfo();
+    // }
   }, []);
 
   useEffect(() => {
@@ -53,8 +53,9 @@ export const GlobalProvider = ({ children }) => {
 
       setTemplates(json.data);
       setLoading(false);
-    } catch (e) {
-      setError(e);
+    } catch (err) {
+      setError(err);
+      setLoading(false);
     }
   };
 
@@ -97,7 +98,8 @@ export const GlobalProvider = ({ children }) => {
       setSelectedTags([]);
       setLoading(false);
     } catch (e) {
-      console.error(e);
+      setError(e);
+      setLoading(false);
     }
   };
 

@@ -427,6 +427,15 @@ body {
   }
 }
 
+.disabled {
+  background: var(--text-muted);
+  cursor: not-allowed;
+
+  &:hover {
+    background: var(--text-muted);
+  }
+}
+
 // No Results Styles
 .no-results {
   text-align: center;
