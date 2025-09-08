@@ -6,16 +6,17 @@ const Loader = ({ size = "md", color = "#3b82f6" }) => {
   };
 
   const containerStyle = {
-    position: "fixed",
+    position: "static",
     top: 0,
     left: 0,
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     background: "rgba(255,255,255,0.4)",
     zIndex: 9999,
+    margin: "2rem auto",
   };
 
   const wrapperStyle = {

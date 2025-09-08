@@ -1,9 +1,11 @@
 import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import GlobalContext from "./context/GlobalContext";
-import Header from "./components/header";
-import Showcase from "./components/showcase";
+import Header from "./components/Header";
+import Showcase from "./components/Showcase";
+import FilteredShowcase from "./components/FilteredShowcase";
 import Loader from "./components/Loader";
+import LoginPage from "./pages/LoginPage";
 import "./App.scss";
 
 const App = () => {
@@ -23,7 +25,8 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Showcase />} />
               <Route path="/search" element={<Showcase />} />
-              <Route path="/filter" element={<Showcase />} />
+              <Route path="/filter/:filters" element={<FilteredShowcase />} />
+              <Route path="/login" element={<LoginPage />} />
             </Routes>
           )}
         </div>

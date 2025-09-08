@@ -4,31 +4,51 @@ import {
   faCircleChevronDown,
   faXmarkCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import Loader from "./Loader";
 
 const MultiSelect = ({
-  options,
-  selected,
-  onChange,
+  fetchOptions,
   placeholder = "Select...",
+  selected = [],
+  onSelectionChange = () => {},
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [options, setOptions] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [fetched, setFetched] = useState(false);
 
-  const availableOptions = options.filter((opt) => !selected.includes(opt));
+  const toggleDropdown = async () => {
+    setDropdownOpen((prev) => !prev);
+
+    if (!fetched && fetchOptions) {
+      setLoading(true);
+      try {
+        const data = await fetchOptions();
+        setOptions(data || []);
+        setFetched(true);
+      } catch (err) {
+        console.error("Failed to fetch options", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
 
   const addOption = (option) => {
-    onChange([...selected, option]);
+    const updated = [...selected, option];
+    onSelectionChange?.(updated);
   };
 
   const removeOption = (option) => {
-    onChange(selected.filter((s) => s !== option));
+    const updated = selected.filter((s) => s !== option);
+    onSelectionChange?.(updated);
   };
+
+  const availableOptions = options.filter((opt) => !selected.includes(opt));
 
   return (
     <div className="dropdown">
-      <div
-        className="dropdown-btn"
-        onClick={() => setDropdownOpen((prev) => !prev)}
-      >
+      <div className="dropdown-btn" onClick={toggleDropdown}>
         <div className="chips-container">
           {selected.length === 0 && (
             <span className="placeholder">{placeholder}</span>
@@ -40,7 +60,6 @@ const MultiSelect = ({
               onClick={(e) => e.stopPropagation()}
             >
               {item}
-
               <FontAwesomeIcon
                 icon={faXmarkCircle}
                 className="chip-close"
@@ -52,26 +71,29 @@ const MultiSelect = ({
             </div>
           ))}
         </div>
-
         <FontAwesomeIcon
           icon={faCircleChevronDown}
           className={`chevron ${dropdownOpen ? "rotate" : ""}`}
         />
       </div>
 
-      {dropdownOpen && availableOptions.length > 0 && (
+      {dropdownOpen && (
         <div className="dropdown-menu">
-          {availableOptions.map((opt) => (
-            <div
-              key={opt}
-              className="dropdown-item"
-              onClick={() => {
-                addOption(opt);
-              }}
-            >
-              {opt}
-            </div>
-          ))}
+          {loading ? (
+            <Loader size={"sm"} color="#f97316" />
+          ) : availableOptions.length > 0 ? (
+            availableOptions.map((opt) => (
+              <div
+                key={opt}
+                className="dropdown-item"
+                onClick={() => addOption(opt)}
+              >
+                {opt}
+              </div>
+            ))
+          ) : (
+            <div className="dropdown-item">No options</div>
+          )}
         </div>
       )}
     </div>

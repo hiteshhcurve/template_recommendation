@@ -26,7 +26,7 @@
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: "Montserrat", sans-serif;
   background-color: var(--background);
   color: var(--text-primary);
   line-height: 1.6;
@@ -36,6 +36,12 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 // App Layout
@@ -616,13 +622,18 @@ body {
 .dropdown {
   position: relative;
   width: 100%;
-  margin: 1rem 0;
+}
+
+.sidebar-content {
+  .dropdown {
+    margin: 1rem 0;
+  }
 }
 
 .dropdown-btn {
   min-height: 2rem;
   padding: 0.5rem 0.8rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   background: #fff;
   border-radius: 0.4rem;
   cursor: pointer;
@@ -667,7 +678,7 @@ body {
 
 .dropdown-menu {
   margin-top: 0.25rem;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 0.4rem;
   background: #fff;
   max-height: 10rem;
@@ -701,4 +712,72 @@ body {
 
 .chevron.rotate {
   transform: rotate(180deg);
+}
+
+// Login Page Styles
+.login {
+  max-width: 650px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background-color: var(--surface);
+  color: var(--text-secondary);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+
+  .login-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    padding: 1.5rem 0.5rem;
+  }
+
+  .form-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 0;
+    color: var(--text-primary);
+  }
+
+  .form-description {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+}
+
+.form-group {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin: 0.75rem 0.5rem;
+
+  .label {
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+
+  .form-input {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+    color: var(--text-primary);
+    background-color: var(--background);
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.1);
+    }
+  }
 }

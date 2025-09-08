@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 
 const GlobalContext = createContext();
@@ -14,16 +14,7 @@ export const GlobalProvider = ({ children }) => {
   const [selectedTags, setSelectedTags] = useState([]);
 
   const isFirstRun = useRef(true);
-
   const location = useLocation();
-
-  useEffect(() => {
-    // if (isFirstRun.current) {
-    isFirstRun.current = false;
-    fetchTemplates();
-    fetchClientInfo();
-    // }
-  }, []);
 
   useEffect(() => {
     if (location.pathname === "/") {
@@ -34,7 +25,24 @@ export const GlobalProvider = ({ children }) => {
         setSelectedClients([]);
         setSelectedCategories([]);
         setSelectedTags([]);
+        setFiltersEnabled(false);
       }
+
+      fetchTemplates();
+      fetchClientInfo();
+      isFirstRun.current = false;
+    } else if (location.pathname.startsWith("/filter/")) {
+      const decoded = JSON.parse(atob(location.pathname.split("/")[2] || ""));
+      try {
+        setSelectedClients(decoded.clients || []);
+        setSelectedCategories(decoded.categories || []);
+        setSelectedTags(decoded.tags || []);
+        applyFilters(decoded);
+      } catch (e) {
+        setError("Invalid filters:", e);
+      }
+    } else {
+      setLoading(false);
     }
   }, [location.pathname]);
 
@@ -103,6 +111,99 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
+  const fetchClients = async () => {
+    try {
+      const res = await fetch(
+        "https://selfserve.hockeycurve.com/selfservev2_staging/filters",
+        {
+          credentials: "include",
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const json = await res.json();
+
+      return json.data.clients;
+    } catch (e) {
+      console.log(e);
+      setError(e);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch(
+        "https://selfserve.hockeycurve.com/selfservev2_staging/filters",
+        {
+          credentials: "include",
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const json = await res.json();
+
+      return json.data.categories;
+    } catch (e) {
+      console.log(e);
+      setError(e);
+    }
+  };
+
+  const fetchTags = async () => {
+    try {
+      const res = await fetch(
+        "https://selfserve.hockeycurve.com/selfservev2_staging/filters",
+        {
+          credentials: "include",
+        }
+      );
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const json = await res.json();
+
+      return json.data.tags;
+    } catch (e) {
+      console.log(e);
+      setError(e);
+    }
+  };
+
+  const applyFilters = useCallback(async (obj) => {
+    console.log(obj);
+
+    const query = obj;
+
+    setSearchQuery("");
+    setFiltersEnabled(
+      (query.categories?.length || 0) > 0 ||
+        (query.clients?.length || 0) > 0 ||
+        (query.tags?.length || 0) > 0
+    );
+
+    try {
+      const res = await fetch(
+        "https://selfserve.hockeycurve.com/selfservev2_staging/apply_filters",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+        }
+      );
+      if (!res.ok) throw new Error("Network response was not ok");
+
+      const json = await res.json();
+      setTemplates(json.data);
+      setLoading(false);
+    } catch (e) {
+      setError(e);
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <GlobalContext.Provider
       value={{
@@ -119,10 +220,14 @@ export const GlobalProvider = ({ children }) => {
         setLoading,
         setError,
         searchTemps,
+        fetchClients,
+        fetchCategories,
+        fetchTags,
         setFiltersEnabled,
         setSelectedClients,
         setSelectedCategories,
         setSelectedTags,
+        applyFilters,
       }}
     >
       {children}
