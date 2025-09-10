@@ -1,12 +1,33 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import GlobalContext from "../context/GlobalContext";
 import FilterModal from "./FilterModal";
 import Search from "./Search";
 
 const Header = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const {
+    setSearchQuery,
+    setFiltersEnabled,
+    setSelectedClients,
+    setSelectedCategories,
+    setSelectedTags,
+  } = useContext(GlobalContext);
+
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+
+    setSearchQuery("");
+    setSelectedClients([]);
+    setSelectedCategories([]);
+    setSelectedTags([]);
+    setFiltersEnabled(false);
+    navigate("/");
+  };
 
   return (
     <>
@@ -15,13 +36,12 @@ const Header = () => {
           <div className="header-content">
             <div className="header-left">
               <div className="logo">
-                <Link to="/" className="home-link">
-                  <img
-                    src="https://s.hcurvecdn.com/selfserve_v2/images/f_logo.webp"
-                    alt="HC Logo"
-                    className="logo-img"
-                  />
-                </Link>
+                <img
+                  src="https://s.hcurvecdn.com/selfserve_v2/images/f_logo.webp"
+                  alt="HC Logo"
+                  className="logo-img"
+                  onClick={handleLogoClick}
+                />
               </div>
             </div>
 

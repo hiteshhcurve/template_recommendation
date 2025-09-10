@@ -10,7 +10,13 @@ const Showcase = () => {
     templates: data,
     searchQuery,
     filtersEnabled,
+    setError,
   } = useContext(GlobalContext);
+
+  if (!data) {
+    setError("Error loading data!");
+    return null;
+  }
 
   const pageSize = 15;
   const totalItems = data.length;

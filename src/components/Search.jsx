@@ -6,7 +6,7 @@ import GlobalContext from "../context/GlobalContext";
 
 const Search = () => {
   const [inputValue, setInputValue] = useState("");
-  const { setSearchQuery, setLoading, searchTemps } = useContext(GlobalContext);
+  const { setLoading } = useContext(GlobalContext);
 
   const navigate = useNavigate();
 
@@ -18,10 +18,10 @@ const Search = () => {
           id="searchForm"
           onSubmit={(e) => {
             e.preventDefault();
-            navigate("/search");
+
+            const encodedQuery = btoa(inputValue.trim());
             setLoading(true);
-            setSearchQuery(inputValue.trim());
-            searchTemps(inputValue.trim());
+            navigate(`/search/${encodedQuery}`);
             setInputValue("");
           }}
         >

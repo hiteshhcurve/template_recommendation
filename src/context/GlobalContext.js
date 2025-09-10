@@ -1,7 +1,9 @@
-import { createContext, useState, useEffect, useRef, useCallback } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 
 const GlobalContext = createContext();
+
+const apiURL = "https://selfserve.hockeycurve.com/selfservev2_staging";
 
 export const GlobalProvider = ({ children }) => {
   const [templates, setTemplates] = useState(null);
@@ -13,24 +15,12 @@ export const GlobalProvider = ({ children }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
 
-  const isFirstRun = useRef(true);
   const location = useLocation();
 
   useEffect(() => {
     if (location.pathname === "/") {
-      if (!isFirstRun.current) {
-        setLoading(true);
-        searchTemps();
-        setSearchQuery("");
-        setSelectedClients([]);
-        setSelectedCategories([]);
-        setSelectedTags([]);
-        setFiltersEnabled(false);
-      }
-
       fetchTemplates();
       fetchClientInfo();
-      isFirstRun.current = false;
     } else if (location.pathname.startsWith("/filter/")) {
       const decoded = JSON.parse(atob(location.pathname.split("/")[2] || ""));
       try {
@@ -41,19 +31,26 @@ export const GlobalProvider = ({ children }) => {
       } catch (e) {
         setError("Invalid filters:", e);
       }
+    } else if (location.pathname.startsWith("/search/")) {
+      const decodedQuery = atob(location.pathname.split("/")[2] || "");
+
+      try {
+        setSearchQuery(decodedQuery);
+        searchTemps(decodedQuery);
+      } catch (e) {
+        setError("Invalid search query:", e);
+      }
     } else {
       setLoading(false);
     }
   }, [location.pathname]);
 
   const fetchTemplates = async () => {
+    setLoading(true);
     try {
-      const res = await fetch(
-        "https://selfserve.hockeycurve.com/selfservev2_staging/template_rec",
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${apiURL}/template_rec`, {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -69,12 +66,9 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchClientInfo = async () => {
     try {
-      const res = await fetch(
-        "https://selfserve.hockeycurve.com/selfservev2_staging/client_info",
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${apiURL}/client_info`, {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -87,15 +81,12 @@ export const GlobalProvider = ({ children }) => {
 
   const searchTemps = async (query) => {
     try {
-      const res = await fetch(
-        "https://selfserve.hockeycurve.com/selfservev2_staging/template_search",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query }),
-        }
-      );
+      const res = await fetch(`${apiURL}/template_search`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
       if (!res.ok) throw new Error("Network response was not ok");
 
       const json = await res.json();
@@ -113,12 +104,9 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchClients = async () => {
     try {
-      const res = await fetch(
-        "https://selfserve.hockeycurve.com/selfservev2_staging/filters",
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${apiURL}/filters`, {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -133,12 +121,9 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch(
-        "https://selfserve.hockeycurve.com/selfservev2_staging/filters",
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${apiURL}/filters`, {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -153,12 +138,9 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchTags = async () => {
     try {
-      const res = await fetch(
-        "https://selfserve.hockeycurve.com/selfservev2_staging/filters",
-        {
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${apiURL}/filters`, {
+        credentials: "include",
+      });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -172,8 +154,6 @@ export const GlobalProvider = ({ children }) => {
   };
 
   const applyFilters = useCallback(async (obj) => {
-    console.log(obj);
-
     const query = obj;
 
     setSearchQuery("");
@@ -184,15 +164,12 @@ export const GlobalProvider = ({ children }) => {
     );
 
     try {
-      const res = await fetch(
-        "https://selfserve.hockeycurve.com/selfservev2_staging/apply_filters",
-        {
-          method: "POST",
-          credentials: "include",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query }),
-        }
-      );
+      const res = await fetch(`${apiURL}/apply_filters`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query }),
+      });
       if (!res.ok) throw new Error("Network response was not ok");
 
       const json = await res.json();

@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import GlobalContext from "./context/GlobalContext";
 import Header from "./components/Header";
 import Showcase from "./components/Showcase";
-import FilteredShowcase from "./components/FilteredShowcase";
 import Loader from "./components/Loader";
 import LoginPage from "./pages/LoginPage";
+import Error from "./components/Error";
 import "./App.scss";
 
 const App = () => {
@@ -20,12 +20,12 @@ const App = () => {
           {loading ? (
             <Loader size="lg" color="#f97316" />
           ) : error ? (
-            <h1>{error}</h1>
+            <Error msg={error} />
           ) : (
             <Routes>
               <Route path="/" element={<Showcase />} />
-              <Route path="/search" element={<Showcase />} />
-              <Route path="/filter/:filters" element={<FilteredShowcase />} />
+              <Route path="/search/:query" element={<Showcase />} />
+              <Route path="/filter/:filters" element={<Showcase />} />
               <Route path="/login" element={<LoginPage />} />
             </Routes>
           )}
