@@ -43,7 +43,7 @@ const Card = ({ template }) => {
           text="View Template"
           icon={true}
           type={"button"}
-          disabled={true}
+          // disabled={true}
           width={"full"}
         />
       </div>

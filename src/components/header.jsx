@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,6 @@ import Button from "./Button";
 
 const Header = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
-  const [forceClose, setForceClose] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -28,12 +27,6 @@ const Header = () => {
     setLoading,
   } = useContext(GlobalContext);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setForceClose(false);
-    }, 1000);
-  }, [forceClose]);
-
   const handleLogoClick = (e) => {
     e.preventDefault();
 
@@ -42,7 +35,6 @@ const Header = () => {
     setSelectedCategories([]);
     setSelectedTags([]);
     setFiltersEnabled(false);
-    setForceClose(true);
     navigate("/");
   };
 
@@ -60,11 +52,9 @@ const Header = () => {
 
       const encodedQuery = btoa(JSON.stringify(query));
 
-      setForceClose(true);
       setLoading(true);
       navigate(`/filter/${encodedQuery}`);
     } else {
-      setForceClose(true);
       setFiltersEnabled(false);
       navigate("/");
     }
@@ -95,7 +85,6 @@ const Header = () => {
                 onSelectionChange={setSelectedClients}
                 placeholder="Clients..."
                 position="absolute"
-                forceClose={forceClose}
               />
 
               <MultiSelect
@@ -104,7 +93,6 @@ const Header = () => {
                 onSelectionChange={setSelectedCategories}
                 placeholder="Categories..."
                 position="absolute"
-                forceClose={forceClose}
               />
 
               <MultiSelect
@@ -113,7 +101,6 @@ const Header = () => {
                 onSelectionChange={setSelectedTags}
                 placeholder="Tags..."
                 position="absolute"
-                forceClose={forceClose}
               />
 
               <Button text="Filter" icon={false} onClick={submitFilters} />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleChevronDown,
@@ -19,11 +19,28 @@ const MultiSelect = ({
   const [loading, setLoading] = useState(false);
   const [fetched, setFetched] = useState(false);
 
+  const dropdownRef = useRef(null);
+
+  // 🔹 Force close from parent
   useEffect(() => {
     if (forceClose) {
       setDropdownOpen(false);
     }
   }, [forceClose]);
+
+  // 🔹 Close when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
 
   const toggleDropdown = async () => {
     setDropdownOpen((prev) => !prev);
@@ -55,7 +72,7 @@ const MultiSelect = ({
   const availableOptions = options.filter((opt) => !selected.includes(opt));
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" ref={dropdownRef}>
       <div className="dropdown-btn" onClick={toggleDropdown}>
         <div className="chips-container">
           {selected.length === 0 && (
@@ -86,7 +103,7 @@ const MultiSelect = ({
       </div>
 
       {dropdownOpen && (
-        <div className="dropdown-menu" style={{ position: position }}>
+        <div className="dropdown-menu" style={{ position }}>
           {loading ? (
             <Loader size={"sm"} color="#f97316" />
           ) : availableOptions.length > 0 ? (
@@ -94,7 +111,10 @@ const MultiSelect = ({
               <div
                 key={opt}
                 className="dropdown-item"
-                onClick={() => addOption(opt)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  addOption(opt);
+                }}
               >
                 {opt}
               </div>
