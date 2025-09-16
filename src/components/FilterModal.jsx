@@ -65,7 +65,12 @@ const FilterModal = ({ isOpen, onClose }) => {
             placeholder="Select Tags..."
           />
 
-          <Button text="Apply Filters" icon={false} onClick={submitFilters} />
+          <Button
+            text="Apply Filters"
+            icon={false}
+            onClick={submitFilters}
+            width={"full"}
+          />
         </div>
       </div>
 

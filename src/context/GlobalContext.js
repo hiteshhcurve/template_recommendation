@@ -158,9 +158,9 @@ export const GlobalProvider = ({ children }) => {
 
     setSearchQuery("");
     setFiltersEnabled(
-      (query.categories?.length || 0) > 0 ||
-        (query.clients?.length || 0) > 0 ||
-        (query.tags?.length || 0) > 0
+      query.categories?.length > 0 ||
+        query.clients?.length > 0 ||
+        query.tags?.length > 0
     );
 
     try {

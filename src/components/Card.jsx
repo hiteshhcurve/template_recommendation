@@ -44,6 +44,7 @@ const Card = ({ template }) => {
           icon={true}
           type={"button"}
           disabled={true}
+          width={"full"}
         />
       </div>
     </div>

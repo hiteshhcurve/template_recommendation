@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleChevronDown,
@@ -11,11 +11,19 @@ const MultiSelect = ({
   placeholder = "Select...",
   selected = [],
   onSelectionChange = () => {},
+  position = "static",
+  forceClose = false,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    if (forceClose) {
+      setDropdownOpen(false);
+    }
+  }, [forceClose]);
 
   const toggleDropdown = async () => {
     setDropdownOpen((prev) => !prev);
@@ -78,7 +86,7 @@ const MultiSelect = ({
       </div>
 
       {dropdownOpen && (
-        <div className="dropdown-menu">
+        <div className="dropdown-menu" style={{ position: position }}>
           {loading ? (
             <Loader size={"sm"} color="#f97316" />
           ) : availableOptions.length > 0 ? (
