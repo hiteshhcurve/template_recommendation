@@ -1,12 +1,16 @@
+import { Link } from "react-router-dom";
 import Button from "./Button";
 
 const Card = ({ template }) => {
-  const { title, desc, thumbnail, meta_tags, videos_images } = template;
+  const { title, desc, thumbnail, meta_tags, videos_images, adpreviews } =
+    template;
 
   const imageLink =
     videos_images !== undefined
       ? JSON.parse(videos_images.replace(/'/g, '"'))[1]
       : thumbnail;
+
+  const encodedPreview = btoa(adpreviews);
 
   return (
     <div className="template-card">
@@ -39,13 +43,17 @@ const Card = ({ template }) => {
           ""
         )}
 
-        <Button
-          text="View Template"
-          icon={true}
-          type={"button"}
-          // disabled={true}
-          width={"full"}
-        />
+        <Link
+          to={`https://selfserve.hockeycurve.com/public/adtag/blog2.php?d=${encodedPreview}`}
+          target="_blank"
+        >
+          <Button
+            text="View Template"
+            icon={true}
+            type={"button"}
+            width={"full"}
+          />
+        </Link>
       </div>
     </div>
   );

@@ -1,20 +1,19 @@
-import { useContext, useState } from "react";
-
+import { useState, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import GlobalContext from "../context/GlobalContext";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
-import GlobalContext from "../context/GlobalContext";
 
 const LoginPage = () => {
-  const { fetchCategories } = useContext(GlobalContext);
-
   const [formData, setFormData] = useState({
-    agency: "",
-    client: "",
-    industries: [],
     brief: "",
   });
 
-  // Generic handler for updating form fields
+  const { setBriefSubmitted } = useContext(GlobalContext);
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const from = state?.from?.pathname || "/";
+
   const handleChange = (field, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -25,6 +24,9 @@ const LoginPage = () => {
   const submitForm = (e) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    setFormData({ brief: "" });
+    setBriefSubmitted(true);
+    navigate(from, { replace: true });
   };
 
   return (
@@ -38,38 +40,12 @@ const LoginPage = () => {
       </div>
 
       <form id="login-form" onSubmit={submitForm}>
-        <div className="flex">
-          <FormInput
-            text="Agency"
-            inputFor="agency"
-            type="text"
-            required
-            onInput={(val) => handleChange("agency", val)}
-          />
-
-          <FormInput
-            text="Client"
-            inputFor="client"
-            type="text"
-            required
-            onInput={(val) => handleChange("client", val)}
-          />
-        </div>
-
-        <FormInput
-          text="Select Industries"
-          inputFor="industries"
-          type="multiselect"
-          fetchOptions={fetchCategories}
-          selected={formData.industries}
-          setSelectionChange={(val) => handleChange("industries", val)}
-          required
-        />
-
         <FormInput
           text="Project Brief"
           inputFor="brief"
           type="textarea"
+          placeholder={"Enter Project Brief..."}
+          value={formData.brief}
           required
           onInput={(val) => handleChange("brief", val)}
         />

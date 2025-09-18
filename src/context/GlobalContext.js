@@ -14,15 +14,16 @@ export const GlobalProvider = ({ children }) => {
   const [selectedClients, setSelectedClients] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [briefSubmitted, setBriefSubmitted] = useState(false);
 
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/") {
+    if (pathname === "/") {
       fetchTemplates();
       fetchClientInfo();
-    } else if (location.pathname.startsWith("/filter/")) {
-      const decoded = JSON.parse(atob(location.pathname.split("/")[2] || ""));
+    } else if (pathname.startsWith("/filter/")) {
+      const decoded = JSON.parse(atob(pathname.split("/")[2] || ""));
       try {
         setSelectedClients(decoded.clients || []);
         setSelectedCategories(decoded.categories || []);
@@ -31,8 +32,8 @@ export const GlobalProvider = ({ children }) => {
       } catch (e) {
         setError("Invalid filters:", e);
       }
-    } else if (location.pathname.startsWith("/search/")) {
-      const decodedQuery = atob(location.pathname.split("/")[2] || "");
+    } else if (pathname.startsWith("/search/")) {
+      const decodedQuery = atob(pathname.split("/")[2] || "");
 
       try {
         setSearchQuery(decodedQuery);
@@ -43,7 +44,7 @@ export const GlobalProvider = ({ children }) => {
     } else {
       setLoading(false);
     }
-  }, [location.pathname]);
+  }, [pathname]);
 
   const fetchTemplates = async () => {
     setLoading(true);
@@ -190,6 +191,7 @@ export const GlobalProvider = ({ children }) => {
         selectedClients,
         selectedCategories,
         selectedTags,
+        briefSubmitted,
         loading,
         error,
         setTemplates,
@@ -204,6 +206,7 @@ export const GlobalProvider = ({ children }) => {
         setSelectedClients,
         setSelectedCategories,
         setSelectedTags,
+        setBriefSubmitted,
         applyFilters,
       }}
     >

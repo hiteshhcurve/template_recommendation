@@ -32,6 +32,10 @@ body {
   line-height: 1.6;
 }
 
+a {
+  text-decoration: none;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -422,6 +426,7 @@ body {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.75rem;
+  margin: 0.5rem;
   background-color: var(--primary-color);
   color: white;
   border: none;

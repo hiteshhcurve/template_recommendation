@@ -8,6 +8,8 @@ const FormInput = ({
   fetchOptions,
   setSelectionChange,
   onInput,
+  placeholder,
+  value,
 }) => {
   return (
     <div className="form-group">
@@ -21,12 +23,15 @@ const FormInput = ({
           id={inputFor}
           name={inputFor}
           onInput={(e) => onInput(e.target.value)}
+          placeholder={placeholder}
+          value={value}
           rows="3"
+          required={required ? true : false}
         ></textarea>
       ) : type === "multiselect" ? (
         <MultiSelect
           fetchOptions={fetchOptions} // your async fetch function
-          placeholder="Select options..."
+          placeholder={placeholder}
           onSelectionChange={setSelectionChange}
         />
       ) : (
@@ -35,6 +40,8 @@ const FormInput = ({
           type={type}
           id={inputFor}
           name={inputFor}
+          placeholder={placeholder}
+          value={value}
           onInput={(e) => onInput(e.target.value)}
           required={required ? true : false}
         />

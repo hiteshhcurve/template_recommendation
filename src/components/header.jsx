@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from "react-router-dom";
 import GlobalContext from "../context/GlobalContext";
 import FilterModal from "./FilterModal";
 import MultiSelect from "./MultiSelect";
@@ -11,6 +11,9 @@ import Button from "./Button";
 const Header = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const isLoginPage = pathname === "/login" || pathname.includes("/preview");
 
   const {
     setSearchQuery,
@@ -30,12 +33,14 @@ const Header = () => {
   const handleLogoClick = (e) => {
     e.preventDefault();
 
-    setSearchQuery("");
-    setSelectedClients([]);
-    setSelectedCategories([]);
-    setSelectedTags([]);
-    setFiltersEnabled(false);
-    navigate("/");
+    if (!isLoginPage) {
+      setSearchQuery("");
+      setSelectedClients([]);
+      setSelectedCategories([]);
+      setSelectedTags([]);
+      setFiltersEnabled(false);
+      navigate("/");
+    }
   };
 
   const submitFilters = () => {
@@ -77,44 +82,47 @@ const Header = () => {
             </div>
 
             {/* <Search /> */}
+            {!isLoginPage && (
+              <>
+                <div className="header-center filter-drops">
+                  <MultiSelect
+                    fetchOptions={fetchClients}
+                    selected={selectedClients}
+                    onSelectionChange={setSelectedClients}
+                    placeholder="Clients..."
+                    position="absolute"
+                  />
 
-            <div className="header-center filter-drops">
-              <MultiSelect
-                fetchOptions={fetchClients}
-                selected={selectedClients}
-                onSelectionChange={setSelectedClients}
-                placeholder="Clients..."
-                position="absolute"
-              />
+                  <MultiSelect
+                    fetchOptions={fetchCategories}
+                    selected={selectedCategories}
+                    onSelectionChange={setSelectedCategories}
+                    placeholder="Categories..."
+                    position="absolute"
+                  />
 
-              <MultiSelect
-                fetchOptions={fetchCategories}
-                selected={selectedCategories}
-                onSelectionChange={setSelectedCategories}
-                placeholder="Categories..."
-                position="absolute"
-              />
+                  <MultiSelect
+                    fetchOptions={fetchTags}
+                    selected={selectedTags}
+                    onSelectionChange={setSelectedTags}
+                    placeholder="Tags..."
+                    position="absolute"
+                  />
 
-              <MultiSelect
-                fetchOptions={fetchTags}
-                selected={selectedTags}
-                onSelectionChange={setSelectedTags}
-                placeholder="Tags..."
-                position="absolute"
-              />
+                  <Button text="Filter" icon={false} onClick={submitFilters} />
+                </div>
 
-              <Button text="Filter" icon={false} onClick={submitFilters} />
-            </div>
-
-            <div className="header-right">
-              <button
-                className="filter-btn"
-                onClick={() => setIsFiltersModalOpen(true)}
-              >
-                <FontAwesomeIcon icon={faFilter} />
-                Filters
-              </button>
-            </div>
+                <div className="header-right">
+                  <button
+                    className="filter-btn"
+                    onClick={() => setIsFiltersModalOpen(true)}
+                  >
+                    <FontAwesomeIcon icon={faFilter} />
+                    Filters
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </header>
