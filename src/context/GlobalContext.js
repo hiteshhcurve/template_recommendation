@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 
 const GlobalContext = createContext();
 
-const apiURL = "https://selfserve.hockeycurve.com/selfservev2_staging";
+const apiURL = "https://selfserve.hockeycurve.com/public/hcgallery";
 
 export const GlobalProvider = ({ children }) => {
   const [templates, setTemplates] = useState(null);
@@ -90,7 +90,6 @@ export const GlobalProvider = ({ children }) => {
       const res = await fetch(`${apiURL}/template_search`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
       });
       if (!res.ok) throw new Error("Network response was not ok");
@@ -110,9 +109,7 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchClients = async () => {
     try {
-      const res = await fetch(`${apiURL}/filters`, {
-        credentials: "include",
-      });
+      const res = await fetch(`${apiURL}/filters`, { credentials: "include" });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -127,9 +124,7 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch(`${apiURL}/filters`, {
-        credentials: "include",
-      });
+      const res = await fetch(`${apiURL}/filters`, { credentials: "include" });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -144,9 +139,7 @@ export const GlobalProvider = ({ children }) => {
 
   const fetchTags = async () => {
     try {
-      const res = await fetch(`${apiURL}/filters`, {
-        credentials: "include",
-      });
+      const res = await fetch(`${apiURL}/filters`, { credentials: "include" });
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -173,7 +166,6 @@ export const GlobalProvider = ({ children }) => {
       const res = await fetch(`${apiURL}/apply_filters`, {
         method: "POST",
         credentials: "include",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query }),
       });
       if (!res.ok) throw new Error("Network response was not ok");
