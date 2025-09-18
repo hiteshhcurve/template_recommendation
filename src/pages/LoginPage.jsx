@@ -25,6 +25,7 @@ const LoginPage = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setFormData({ brief: "" });
+    sessionStorage.setItem("login", true);
     setBriefSubmitted(true);
     navigate(from, { replace: true });
   };

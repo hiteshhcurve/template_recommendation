@@ -15,8 +15,13 @@ export const GlobalProvider = ({ children }) => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [briefSubmitted, setBriefSubmitted] = useState(false);
-
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (sessionStorage.getItem("login") === "true") {
+      setBriefSubmitted(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (pathname === "/") {
