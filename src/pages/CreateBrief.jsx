@@ -25,7 +25,7 @@ const CreateBrief = () => {
   };
 
   const [formData, setFormData] = useState(initialState);
-  const { setError } = useContext(GlobalContext);
+  const { setError, setMessage } = useContext(GlobalContext);
 
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -52,8 +52,10 @@ const CreateBrief = () => {
 
       const json = await res.json();
       console.log(json);
+      return true;
     } catch (e) {
       setError(e);
+      return false;
     }
   };
 
@@ -61,7 +63,11 @@ const CreateBrief = () => {
     e.preventDefault();
     triggerEmail(formData);
     setFormData(initialState);
-    navigate(from, { replace: true });
+    if (triggerEmail) {
+      setMessage(
+        "Brief created successfully! Our team will get back to you at the earliest."
+      );
+    }
   };
 
   return (

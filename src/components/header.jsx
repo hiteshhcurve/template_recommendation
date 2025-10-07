@@ -16,6 +16,8 @@ const Header = () => {
     setSelectedCategories,
     setSelectedTags,
     setFiltersEnabled,
+    setError,
+    setMessage,
   } = useContext(GlobalContext);
 
   const handleLogoClick = (e) => {
@@ -26,6 +28,8 @@ const Header = () => {
     setSelectedCategories([]);
     setSelectedTags([]);
     setFiltersEnabled(false);
+    setError("");
+    setMessage("");
     navigate("/");
   };
 

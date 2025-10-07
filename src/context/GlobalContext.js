@@ -10,6 +10,7 @@ export const GlobalProvider = ({ children }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
   const [filtersEnabled, setFiltersEnabled] = useState(false);
   const [selectedClients, setSelectedClients] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -184,10 +185,12 @@ export const GlobalProvider = ({ children }) => {
         selectedTags,
         loading,
         error,
+        message,
         setTemplates,
         setSearchQuery,
         setLoading,
         setError,
+        setMessage,
         searchTemps,
         fetchClients,
         fetchCategories,

@@ -883,3 +883,30 @@ a {
     font-size: 1.5rem;
   }
 }
+
+.success-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  .success-icon {
+    width: 10rem;
+    height: 10rem;
+    color: var(--primary-color);
+    opacity: 0.5;
+    margin: 0 auto 1rem;
+  }
+
+  .success-heading {
+    font-family: "Montserrat", sans-serif;
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .success-msg {
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+  }
+}

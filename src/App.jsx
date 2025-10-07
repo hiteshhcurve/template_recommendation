@@ -5,13 +5,13 @@ import Header from "./components/Header";
 import Navigation from "./components/Navigation";
 import Showcase from "./components/Showcase";
 import Loader from "./components/Loader";
-import LoginPage from "./pages/LoginPage";
 import Error from "./components/Error";
 import CreateBrief from "./pages/CreateBrief";
 import "./App.scss";
+import Success from "./components/Success";
 
 const App = () => {
-  const { loading, error } = useContext(GlobalContext);
+  const { loading, error, message } = useContext(GlobalContext);
 
   const { pathname } = useLocation();
 
@@ -28,6 +28,8 @@ const App = () => {
             <Loader size="lg" color="#f97316" />
           ) : error ? (
             <Error msg={error} />
+          ) : message ? (
+            <Success msg={message} />
           ) : (
             <Routes>
               <Route path="/" element={<Showcase />} />
