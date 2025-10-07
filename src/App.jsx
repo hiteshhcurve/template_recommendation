@@ -6,7 +6,6 @@ import Showcase from "./components/Showcase";
 import Loader from "./components/Loader";
 import LoginPage from "./pages/LoginPage";
 import Error from "./components/Error";
-// import Preview from "./pages/Preview";
 import "./App.scss";
 
 const App = () => {
