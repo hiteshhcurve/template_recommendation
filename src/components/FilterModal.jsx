@@ -67,6 +67,7 @@ const FilterModal = ({ isOpen, onClose }) => {
 
           <Button
             text="Apply Filters"
+            btnType={"primary"}
             icon={false}
             onClick={submitFilters}
             width={"full"}

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 import GlobalContext from "./context/GlobalContext";
 import Header from "./components/Header";
+import Navigation from "./components/Navigation";
 import Showcase from "./components/Showcase";
 import Loader from "./components/Loader";
 import LoginPage from "./pages/LoginPage";
@@ -14,6 +15,7 @@ const App = () => {
   return (
     <div className="app">
       <Header />
+      <Navigation />
 
       <main className="main-content">
         <div className="container">
@@ -28,15 +30,6 @@ const App = () => {
               <Route path="/search/:query" element={<Showcase />} />
 
               <Route path="/filter/:filters" element={<Showcase />} />
-
-              {/* <Route
-                path="/preview/:previewUrl"
-                element={
-                  <ProtectedRoute>
-                    <Preview />
-                  </ProtectedRoute>
-                }
-              /> */}
 
               <Route path="/login" element={<LoginPage />} />
             </Routes>
