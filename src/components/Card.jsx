@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import Button from "./Button";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 const Card = ({ template }) => {
   const { title, desc, thumbnail, meta_tags, videos_images, adpreviews } =
@@ -49,9 +50,10 @@ const Card = ({ template }) => {
         >
           <Button
             text="View Template"
-            icon={true}
+            icon={faEye}
             type={"button"}
             width={"full"}
+            btnType={"primary"}
           />
         </Link>
       </div>

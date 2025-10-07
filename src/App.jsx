@@ -6,7 +6,6 @@ import Showcase from "./components/Showcase";
 import Loader from "./components/Loader";
 import LoginPage from "./pages/LoginPage";
 import Error from "./components/Error";
-import ProtectedRoute from "./components/ProtectedRoute";
 // import Preview from "./pages/Preview";
 import "./App.scss";
 
@@ -25,32 +24,11 @@ const App = () => {
             <Error msg={error} />
           ) : (
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <Showcase />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/" element={<Showcase />} />
 
-              <Route
-                path="/search/:query"
-                element={
-                  <ProtectedRoute>
-                    <Showcase />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/search/:query" element={<Showcase />} />
 
-              <Route
-                path="/filter/:filters"
-                element={
-                  <ProtectedRoute>
-                    <Showcase />
-                  </ProtectedRoute>
-                }
-              />
+              <Route path="/filter/:filters" element={<Showcase />} />
 
               {/* <Route
                 path="/preview/:previewUrl"

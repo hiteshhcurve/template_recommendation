@@ -1,6 +1,5 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import GlobalContext from "../context/GlobalContext";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
 
@@ -9,7 +8,6 @@ const LoginPage = () => {
     brief: "",
   });
 
-  const { setBriefSubmitted } = useContext(GlobalContext);
   const navigate = useNavigate();
   const { state } = useLocation();
   const from = state?.from?.pathname || "/";
@@ -25,8 +23,6 @@ const LoginPage = () => {
     e.preventDefault();
     console.log("Form submitted:", formData);
     setFormData({ brief: "" });
-    sessionStorage.setItem("login", true);
-    setBriefSubmitted(true);
     navigate(from, { replace: true });
   };
 
@@ -51,7 +47,7 @@ const LoginPage = () => {
           onInput={(val) => handleChange("brief", val)}
         />
 
-        <Button text="Submit" type="submit" />
+        <Button text="Submit" type="submit" btnType={"primary"} />
       </form>
     </section>
   );

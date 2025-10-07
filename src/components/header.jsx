@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faFilter, faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import GlobalContext from "../context/GlobalContext";
 import FilterModal from "./FilterModal";
 import MultiSelect from "./MultiSelect";
@@ -109,7 +109,12 @@ const Header = () => {
                     position="absolute"
                   />
 
-                  <Button text="Filter" icon={false} onClick={submitFilters} />
+                  <Button
+                    text="Filter"
+                    icon={faFilter}
+                    onClick={submitFilters}
+                    btnType={"primary"}
+                  />
                 </div>
 
                 <div className="header-right">
@@ -122,6 +127,16 @@ const Header = () => {
                   </button>
                 </div>
               </>
+            )}
+
+            {!isLoginPage && (
+              <div className="header-right">
+                <Button
+                  icon={faRightToBracket}
+                  btnType={"secondary"}
+                  onClick={() => navigate("/login")}
+                />
+              </div>
             )}
           </div>
         </div>

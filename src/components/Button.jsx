@@ -1,15 +1,14 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
 
-const Button = ({ text, icon, type, onClick, disabled, width }) => {
+const Button = ({ text, icon, type, onClick, disabled, width, btnType }) => {
   return (
     <button
-      className={`view-btn ${disabled ? "disabled" : ""}`}
+      className={`btn-${btnType} ${disabled ? "disabled" : ""}`}
       type={type || "button"}
       style={{ width: `${width === "full" ? "100%" : "auto"}` }}
       onClick={onClick}
     >
-      {icon && <FontAwesomeIcon icon={faEye} />}
+      <FontAwesomeIcon icon={icon} />
       {text}
     </button>
   );

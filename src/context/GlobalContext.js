@@ -14,14 +14,8 @@ export const GlobalProvider = ({ children }) => {
   const [selectedClients, setSelectedClients] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
-  const [briefSubmitted, setBriefSubmitted] = useState(false);
-  const { pathname } = useLocation();
 
-  useEffect(() => {
-    if (sessionStorage.getItem("login") === "true") {
-      setBriefSubmitted(true);
-    }
-  }, []);
+  const { pathname } = useLocation();
 
   useEffect(() => {
     if (pathname === "/") {
@@ -188,7 +182,6 @@ export const GlobalProvider = ({ children }) => {
         selectedClients,
         selectedCategories,
         selectedTags,
-        briefSubmitted,
         loading,
         error,
         setTemplates,
@@ -203,7 +196,6 @@ export const GlobalProvider = ({ children }) => {
         setSelectedClients,
         setSelectedCategories,
         setSelectedTags,
-        setBriefSubmitted,
         applyFilters,
       }}
     >
