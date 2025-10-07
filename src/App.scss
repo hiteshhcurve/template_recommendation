@@ -48,6 +48,12 @@ a {
   justify-content: space-between;
 }
 
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
 .btn-primary {
   display: flex;
   align-items: center;

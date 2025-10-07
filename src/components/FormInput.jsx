@@ -10,6 +10,7 @@ const FormInput = ({
   onInput,
   placeholder,
   value,
+  options = [],
 }) => {
   return (
     <div className="form-group">
@@ -22,7 +23,7 @@ const FormInput = ({
           className="form-input"
           id={inputFor}
           name={inputFor}
-          onInput={(e) => onInput(e.target.value)}
+          onChange={(e) => onInput(e.target.value)}
           placeholder={placeholder}
           value={value}
           rows="3"
@@ -34,6 +35,20 @@ const FormInput = ({
           placeholder={placeholder}
           onSelectionChange={setSelectionChange}
         />
+      ) : type === "select" ? (
+        <select
+          className="form-input"
+          id={inputFor}
+          name={inputFor}
+          value={value}
+          onChange={(e) => onInput(e.target.value)}
+        >
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
       ) : (
         <input
           className="form-input"
@@ -42,7 +57,7 @@ const FormInput = ({
           name={inputFor}
           placeholder={placeholder}
           value={value}
-          onInput={(e) => onInput(e.target.value)}
+          onChange={(e) => onInput(e.target.value)}
           required={required ? true : false}
         />
       )}

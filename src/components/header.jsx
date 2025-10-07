@@ -8,7 +8,7 @@ const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const isLoginPage = pathname === "/login";
+  const isLoginPage = pathname === "/create-brief";
 
   const {
     setSearchQuery,
@@ -21,14 +21,12 @@ const Header = () => {
   const handleLogoClick = (e) => {
     e.preventDefault();
 
-    if (!isLoginPage) {
-      setSearchQuery("");
-      setSelectedClients([]);
-      setSelectedCategories([]);
-      setSelectedTags([]);
-      setFiltersEnabled(false);
-      navigate("/");
-    }
+    setSearchQuery("");
+    setSelectedClients([]);
+    setSelectedCategories([]);
+    setSelectedTags([]);
+    setFiltersEnabled(false);
+    navigate("/");
   };
 
   return (
@@ -53,7 +51,7 @@ const Header = () => {
                   icon={faRightToBracket}
                   text={"Campaign Brief"}
                   btnType={"secondary"}
-                  onClick={() => navigate("/login")}
+                  onClick={() => navigate("/create-brief")}
                 />
               </div>
             )}

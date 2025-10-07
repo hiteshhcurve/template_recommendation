@@ -4,7 +4,7 @@ import GlobalContext from "../context/GlobalContext";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
 
-const LoginPage = () => {
+const CreateBrief = () => {
   const initialState = {
     campaign_name: "",
     campaign_type: "Live",
@@ -51,6 +51,7 @@ const LoginPage = () => {
       if (!res.ok) throw new Error("Network response was not ok");
 
       const json = await res.json();
+      console.log(json);
     } catch (e) {
       setError(e);
     }
@@ -244,7 +245,7 @@ const LoginPage = () => {
         <FormInput
           text="Email IDs"
           inputFor="emailid"
-          type="email"
+          type="text"
           value={formData.emailid}
           placeholder={"Enter your email"}
           required
@@ -257,4 +258,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default CreateBrief;
