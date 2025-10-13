@@ -13,8 +13,9 @@ const Header = () => {
   const {
     setSearchQuery,
     setSelectedClients,
-    setSelectedCategories,
-    setSelectedTags,
+    setSelectedIndustryTags1,
+    setSelectedIndustryTags2,
+    setSelectedIndustryTags3,
     setFiltersEnabled,
     setError,
     setMessage,
@@ -25,8 +26,9 @@ const Header = () => {
 
     setSearchQuery("");
     setSelectedClients([]);
-    setSelectedCategories([]);
-    setSelectedTags([]);
+    setSelectedIndustryTags1([]);
+    setSelectedIndustryTags2([]);
+    setSelectedIndustryTags3([]);
     setFiltersEnabled(false);
     setError("");
     setMessage("");

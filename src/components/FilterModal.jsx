@@ -1,38 +1,23 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
 import GlobalContext from "../context/GlobalContext";
 import MultiSelect from "./MultiSelect";
 import Button from "./Button";
 
-const FilterModal = ({ isOpen, onClose }) => {
+const FilterModal = ({ isOpen, onClose, onSubmit }) => {
   const {
-    selectedClients,
-    selectedCategories,
-    selectedTags,
     setSelectedClients,
-    setSelectedCategories,
-    setSelectedTags,
+    setSelectedIndustryTags1,
+    setSelectedIndustryTags2,
+    setSelectedIndustryTags3,
+    selectedClients,
+    selectedIndustryTags1,
+    selectedIndustryTags2,
+    selectedIndustryTags3,
     fetchClients,
-    fetchCategories,
-    fetchTags,
-    setLoading,
+    fetchIndustryTags1,
+    fetchIndustryTags2,
+    fetchIndustryTags3,
   } = useContext(GlobalContext);
-
-  const navigate = useNavigate();
-
-  const submitFilters = () => {
-    const query = {
-      clients: selectedClients,
-      categories: selectedCategories,
-      tags: selectedTags,
-    };
-
-    const encodedQuery = btoa(JSON.stringify(query));
-
-    onClose();
-    setLoading(true);
-    navigate(`/filter/${encodedQuery}`);
-  };
 
   return (
     <>
@@ -44,7 +29,6 @@ const FilterModal = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Dropdown */}
         <div className="sidebar-content">
           <MultiSelect
             fetchOptions={fetchClients}
@@ -52,24 +36,33 @@ const FilterModal = ({ isOpen, onClose }) => {
             onSelectionChange={setSelectedClients}
             placeholder="Select Clients..."
           />
+
           <MultiSelect
-            fetchOptions={fetchCategories}
-            selected={selectedCategories}
-            onSelectionChange={setSelectedCategories}
-            placeholder="Select Categories..."
+            fetchOptions={fetchIndustryTags1}
+            selected={selectedIndustryTags1}
+            onSelectionChange={setSelectedIndustryTags1}
+            placeholder="Industry Tags 1..."
           />
+
           <MultiSelect
-            fetchOptions={fetchTags}
-            selected={selectedTags}
-            onSelectionChange={setSelectedTags}
-            placeholder="Select Tags..."
+            fetchOptions={fetchIndustryTags2}
+            selected={selectedIndustryTags2}
+            onSelectionChange={setSelectedIndustryTags2}
+            placeholder="Industry Tags 2..."
+          />
+
+          <MultiSelect
+            fetchOptions={fetchIndustryTags3}
+            selected={selectedIndustryTags3}
+            onSelectionChange={setSelectedIndustryTags3}
+            placeholder="Industry Tags 3..."
           />
 
           <Button
             text="Apply Filters"
             btnType={"primary"}
             icon={false}
-            onClick={submitFilters}
+            onClick={onSubmit}
             width={"full"}
           />
         </div>

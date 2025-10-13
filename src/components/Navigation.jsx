@@ -17,27 +17,32 @@ const Navigation = () => {
   const {
     setFiltersEnabled,
     setSelectedClients,
-    setSelectedCategories,
-    setSelectedTags,
+    setSelectedIndustryTags1,
+    setSelectedIndustryTags2,
+    setSelectedIndustryTags3,
     selectedClients,
-    selectedCategories,
-    selectedTags,
+    selectedIndustryTags1,
+    selectedIndustryTags2,
+    selectedIndustryTags3,
     fetchClients,
-    fetchCategories,
-    fetchTags,
+    fetchIndustryTags1,
+    fetchIndustryTags2,
+    fetchIndustryTags3,
     setLoading,
   } = useContext(GlobalContext);
 
   const submitFilters = () => {
     if (
       selectedClients.length > 0 ||
-      selectedCategories.length > 0 ||
-      selectedTags.length > 0
+      selectedIndustryTags1.length > 0 ||
+      selectedIndustryTags2.length > 0 ||
+      selectedIndustryTags3.length > 0
     ) {
       const query = {
         clients: selectedClients,
-        categories: selectedCategories,
-        tags: selectedTags,
+        industryTags1: selectedIndustryTags1,
+        industryTags2: selectedIndustryTags2,
+        industryTags3: selectedIndustryTags3,
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
@@ -48,7 +53,10 @@ const Navigation = () => {
       setFiltersEnabled(false);
       navigate("/");
     }
+
+    if (isFiltersModalOpen) setIsFiltersModalOpen(false);
   };
+
   return (
     <section className="navigation">
       <div className="container">
@@ -64,18 +72,26 @@ const Navigation = () => {
               />
 
               <MultiSelect
-                fetchOptions={fetchCategories}
-                selected={selectedCategories}
-                onSelectionChange={setSelectedCategories}
-                placeholder="Categories..."
+                fetchOptions={fetchIndustryTags1}
+                selected={selectedIndustryTags1}
+                onSelectionChange={setSelectedIndustryTags1}
+                placeholder="Industry Tags 1..."
                 position="absolute"
               />
 
               <MultiSelect
-                fetchOptions={fetchTags}
-                selected={selectedTags}
-                onSelectionChange={setSelectedTags}
-                placeholder="Tags..."
+                fetchOptions={fetchIndustryTags2}
+                selected={selectedIndustryTags2}
+                onSelectionChange={setSelectedIndustryTags2}
+                placeholder="Industry Tags 2..."
+                position="absolute"
+              />
+
+              <MultiSelect
+                fetchOptions={fetchIndustryTags3}
+                selected={selectedIndustryTags3}
+                onSelectionChange={setSelectedIndustryTags3}
+                placeholder="Industry Tags 3..."
                 position="absolute"
               />
 
@@ -103,6 +119,7 @@ const Navigation = () => {
       <FilterModal
         isOpen={isFiltersModalOpen}
         onClose={() => setIsFiltersModalOpen(false)}
+        onSubmit={submitFilters}
       />
     </section>
   );

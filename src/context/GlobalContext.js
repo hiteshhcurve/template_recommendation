@@ -13,8 +13,9 @@ export const GlobalProvider = ({ children }) => {
   const [message, setMessage] = useState("");
   const [filtersEnabled, setFiltersEnabled] = useState(false);
   const [selectedClients, setSelectedClients] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedIndustryTags1, setSelectedIndustryTags1] = useState([]);
+  const [selectedIndustryTags2, setSelectedIndustryTags2] = useState([]);
+  const [selectedIndustryTags3, setSelectedIndustryTags3] = useState([]);
 
   const { pathname } = useLocation();
 
@@ -26,8 +27,9 @@ export const GlobalProvider = ({ children }) => {
       const decoded = JSON.parse(atob(pathname.split("/")[2] || ""));
       try {
         setSelectedClients(decoded.clients || []);
-        setSelectedCategories(decoded.categories || []);
-        setSelectedTags(decoded.tags || []);
+        setSelectedIndustryTags1(decoded.industryTags1 || []);
+        setSelectedIndustryTags2(decoded.industryTags2 || []);
+        setSelectedIndustryTags3(decoded.industryTags3 || []);
         applyFilters(decoded);
       } catch (e) {
         setError("Invalid filters:", e);
@@ -93,8 +95,9 @@ export const GlobalProvider = ({ children }) => {
       setTemplates(json.data);
       setFiltersEnabled(false);
       setSelectedClients([]);
-      setSelectedCategories([]);
-      setSelectedTags([]);
+      setSelectedIndustryTags1([]);
+      setSelectedIndustryTags2([]);
+      setSelectedIndustryTags3([]);
       setLoading(false);
     } catch (e) {
       setError(e);
@@ -117,7 +120,7 @@ export const GlobalProvider = ({ children }) => {
     }
   };
 
-  const fetchCategories = async () => {
+  const fetchIndustryTags1 = async () => {
     try {
       const res = await fetch(`${apiURL}/filters`, { credentials: "include" });
       if (!res.ok) {
@@ -125,14 +128,14 @@ export const GlobalProvider = ({ children }) => {
       }
       const json = await res.json();
 
-      return json.data.categories;
+      return json.data.industry_tag1;
     } catch (e) {
       console.log(e);
       setError(e);
     }
   };
 
-  const fetchTags = async () => {
+  const fetchIndustryTags2 = async () => {
     try {
       const res = await fetch(`${apiURL}/filters`, { credentials: "include" });
       if (!res.ok) {
@@ -140,7 +143,22 @@ export const GlobalProvider = ({ children }) => {
       }
       const json = await res.json();
 
-      return json.data.tags;
+      return json.data.industry_tag2;
+    } catch (e) {
+      console.log(e);
+      setError(e);
+    }
+  };
+
+  const fetchIndustryTags3 = async () => {
+    try {
+      const res = await fetch(`${apiURL}/filters`, { credentials: "include" });
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const json = await res.json();
+
+      return json.data.industry_tag3;
     } catch (e) {
       console.log(e);
       setError(e);
@@ -152,9 +170,10 @@ export const GlobalProvider = ({ children }) => {
 
     setSearchQuery("");
     setFiltersEnabled(
-      query.categories?.length > 0 ||
-        query.clients?.length > 0 ||
-        query.tags?.length > 0
+      query.clients?.length > 0 ||
+        query.industryTags1?.length > 0 ||
+        query.industryTags2?.length > 0 ||
+        query.industryTags3?.length > 0
     );
 
     try {
@@ -181,8 +200,9 @@ export const GlobalProvider = ({ children }) => {
         searchQuery,
         filtersEnabled,
         selectedClients,
-        selectedCategories,
-        selectedTags,
+        selectedIndustryTags1,
+        selectedIndustryTags2,
+        selectedIndustryTags3,
         loading,
         error,
         message,
@@ -193,12 +213,14 @@ export const GlobalProvider = ({ children }) => {
         setMessage,
         searchTemps,
         fetchClients,
-        fetchCategories,
-        fetchTags,
+        fetchIndustryTags1,
+        fetchIndustryTags2,
+        fetchIndustryTags3,
         setFiltersEnabled,
         setSelectedClients,
-        setSelectedCategories,
-        setSelectedTags,
+        setSelectedIndustryTags1,
+        setSelectedIndustryTags2,
+        setSelectedIndustryTags3,
         applyFilters,
       }}
     >

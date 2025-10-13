@@ -18,17 +18,17 @@ const MultiSelect = ({
   const [options, setOptions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [fetched, setFetched] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const dropdownRef = useRef(null);
+  const searchInputRef = useRef(null);
 
-  // 🔹 Force close from parent
   useEffect(() => {
     if (forceClose) {
       setDropdownOpen(false);
     }
   }, [forceClose]);
 
-  // 🔹 Close when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -57,6 +57,13 @@ const MultiSelect = ({
         setLoading(false);
       }
     }
+
+    // Focus the search box after opening
+    setTimeout(() => {
+      if (!dropdownOpen && searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, 100);
   };
 
   const addOption = (option) => {
@@ -70,6 +77,10 @@ const MultiSelect = ({
   };
 
   const availableOptions = options.filter((opt) => !selected.includes(opt));
+
+  const filteredOptions = availableOptions.filter((opt) =>
+    opt.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="dropdown" ref={dropdownRef}>
@@ -106,21 +117,37 @@ const MultiSelect = ({
         <div className="dropdown-menu" style={{ position }}>
           {loading ? (
             <Loader size={"sm"} color="#f97316" />
-          ) : availableOptions.length > 0 ? (
-            availableOptions.map((opt) => (
-              <div
-                key={opt}
-                className="dropdown-item"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  addOption(opt);
-                }}
-              >
-                {opt}
-              </div>
-            ))
           ) : (
-            <div className="dropdown-item">No options</div>
+            <>
+              <input
+                type="text"
+                ref={searchInputRef}
+                className="dropdown-search"
+                placeholder="Search..."
+                value={searchTerm}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                autoFocus
+              />
+
+              {filteredOptions.length > 0 ? (
+                filteredOptions.map((opt) => (
+                  <div
+                    key={opt}
+                    className="dropdown-item"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addOption(opt);
+                      setSearchTerm("");
+                    }}
+                  >
+                    {opt}
+                  </div>
+                ))
+              ) : (
+                <div className="dropdown-item">No options</div>
+              )}
+            </>
           )}
         </div>
       )}
