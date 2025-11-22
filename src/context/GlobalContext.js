@@ -16,6 +16,10 @@ export const GlobalProvider = ({ children }) => {
   const [selectedIndustryTags1, setSelectedIndustryTags1] = useState([]);
   const [selectedIndustryTags2, setSelectedIndustryTags2] = useState([]);
   const [selectedIndustryTags3, setSelectedIndustryTags3] = useState([]);
+  const [numberOfTemps, setNumberOfTemps] = useState({
+    total: 0,
+    filtered: 0,
+  });
 
   const { pathname } = useLocation();
 
@@ -186,6 +190,11 @@ export const GlobalProvider = ({ children }) => {
 
       const json = await res.json();
       setTemplates(json.data);
+      setNumberOfTemps({
+        total: json.total_temps,
+        filtered: json.filtered_temps,
+      });
+
       setLoading(false);
     } catch (e) {
       setError(e);
@@ -203,6 +212,7 @@ export const GlobalProvider = ({ children }) => {
         selectedIndustryTags1,
         selectedIndustryTags2,
         selectedIndustryTags3,
+        numberOfTemps,
         loading,
         error,
         message,

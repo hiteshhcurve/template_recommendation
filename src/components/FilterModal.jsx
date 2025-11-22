@@ -1,23 +1,25 @@
-import { useContext } from "react";
-import GlobalContext from "../context/GlobalContext";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setSelectedClients,
+  setSelectedIndustryTags1,
+  setSelectedIndustryTags2,
+  setSelectedIndustryTags3,
+} from "../features/filters/filterSlice";
 import MultiSelect from "./MultiSelect";
 import Button from "./Button";
 
 const FilterModal = ({ isOpen, onClose, onSubmit }) => {
+  const dispatch = useDispatch();
+  const { clients, industry_tag1, industry_tag2, industry_tag3 } = useSelector(
+    (state) => state.filters.filters
+  );
+
   const {
-    setSelectedClients,
-    setSelectedIndustryTags1,
-    setSelectedIndustryTags2,
-    setSelectedIndustryTags3,
-    selectedClients,
-    selectedIndustryTags1,
-    selectedIndustryTags2,
-    selectedIndustryTags3,
-    fetchClients,
-    fetchIndustryTags1,
-    fetchIndustryTags2,
-    fetchIndustryTags3,
-  } = useContext(GlobalContext);
+    clients: selectedClients,
+    industry_tag1: selectedIndustryTags1,
+    industry_tag2: selectedIndustryTags2,
+    industry_tag3: selectedIndustryTags3,
+  } = useSelector((state) => state.filters.selected);
 
   return (
     <>
@@ -31,30 +33,38 @@ const FilterModal = ({ isOpen, onClose, onSubmit }) => {
 
         <div className="sidebar-content">
           <MultiSelect
-            fetchOptions={fetchClients}
+            options={clients}
             selected={selectedClients}
-            onSelectionChange={setSelectedClients}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedClients(item));
+            }}
             placeholder="Select Clients..."
           />
 
           <MultiSelect
-            fetchOptions={fetchIndustryTags1}
+            options={industry_tag1}
             selected={selectedIndustryTags1}
-            onSelectionChange={setSelectedIndustryTags1}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedIndustryTags1(item));
+            }}
             placeholder="Industry Tags 1..."
           />
 
           <MultiSelect
-            fetchOptions={fetchIndustryTags2}
+            options={industry_tag2}
             selected={selectedIndustryTags2}
-            onSelectionChange={setSelectedIndustryTags2}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedIndustryTags2(item));
+            }}
             placeholder="Industry Tags 2..."
           />
 
           <MultiSelect
-            fetchOptions={fetchIndustryTags3}
+            options={industry_tag3}
             selected={selectedIndustryTags3}
-            onSelectionChange={setSelectedIndustryTags3}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedIndustryTags3(item));
+            }}
             placeholder="Industry Tags 3..."
           />
 

@@ -1,8 +1,14 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setSelectedClients,
+  setSelectedIndustryTags1,
+  setSelectedIndustryTags2,
+  setSelectedIndustryTags3,
+} from "../features/filters/filterSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
-import GlobalContext from "../context/GlobalContext";
 import FilterModal from "./FilterModal";
 import MultiSelect from "./MultiSelect";
 import Button from "./Button";
@@ -10,26 +16,21 @@ import Button from "./Button";
 const Navigation = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
 
   const isLoginPage = pathname === "/login";
 
+  const { clients, industry_tag1, industry_tag2, industry_tag3 } = useSelector(
+    (state) => state.filters.filters
+  );
+
   const {
-    setFiltersEnabled,
-    setSelectedClients,
-    setSelectedIndustryTags1,
-    setSelectedIndustryTags2,
-    setSelectedIndustryTags3,
-    selectedClients,
-    selectedIndustryTags1,
-    selectedIndustryTags2,
-    selectedIndustryTags3,
-    fetchClients,
-    fetchIndustryTags1,
-    fetchIndustryTags2,
-    fetchIndustryTags3,
-    setLoading,
-  } = useContext(GlobalContext);
+    clients: selectedClients,
+    industry_tag1: selectedIndustryTags1,
+    industry_tag2: selectedIndustryTags2,
+    industry_tag3: selectedIndustryTags3,
+  } = useSelector((state) => state.filters.selected);
 
   const submitFilters = () => {
     if (
@@ -47,10 +48,8 @@ const Navigation = () => {
 
       const encodedQuery = btoa(JSON.stringify(query));
 
-      setLoading(true);
       navigate(`/filter/${encodedQuery}`);
     } else {
-      setFiltersEnabled(false);
       navigate("/");
     }
 
@@ -64,33 +63,41 @@ const Navigation = () => {
           <>
             <div className="nav-content filter-drops">
               <MultiSelect
-                fetchOptions={fetchClients}
+                options={clients}
                 selected={selectedClients}
-                onSelectionChange={setSelectedClients}
+                onSelectionChange={(item) => {
+                  dispatch(setSelectedClients(item));
+                }}
                 placeholder="Clients..."
                 position="absolute"
               />
 
               <MultiSelect
-                fetchOptions={fetchIndustryTags1}
+                options={industry_tag1}
                 selected={selectedIndustryTags1}
-                onSelectionChange={setSelectedIndustryTags1}
+                onSelectionChange={(item) => {
+                  dispatch(setSelectedIndustryTags1(item));
+                }}
                 placeholder="Industry Tags 1..."
                 position="absolute"
               />
 
               <MultiSelect
-                fetchOptions={fetchIndustryTags2}
+                options={industry_tag2}
                 selected={selectedIndustryTags2}
-                onSelectionChange={setSelectedIndustryTags2}
+                onSelectionChange={(item) => {
+                  dispatch(setSelectedIndustryTags2(item));
+                }}
                 placeholder="Industry Tags 2..."
                 position="absolute"
               />
 
               <MultiSelect
-                fetchOptions={fetchIndustryTags3}
+                options={industry_tag3}
                 selected={selectedIndustryTags3}
-                onSelectionChange={setSelectedIndustryTags3}
+                onSelectionChange={(item) => {
+                  dispatch(setSelectedIndustryTags3(item));
+                }}
                 placeholder="Industry Tags 3..."
                 position="absolute"
               />

@@ -8,7 +8,7 @@ const Button = ({ text, icon, type, onClick, disabled, width, btnType }) => {
       style={{ width: `${width === "full" ? "100%" : "auto"}` }}
       onClick={onClick}
     >
-      <FontAwesomeIcon icon={icon} />
+      {icon && <FontAwesomeIcon icon={icon} />}
       {text}
     </button>
   );

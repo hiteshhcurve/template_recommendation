@@ -1,0 +1,113 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import templateService from "./templateService";
+
+// Fetch all templates
+export const fetchTemplates = createAsyncThunk(
+  "templates/fetchAll",
+  async (_, thunkAPI) => {
+    try {
+      return await templateService.fetchTemplates();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Fetch client info
+export const fetchClientInfo = createAsyncThunk(
+  "templates/fetchClients",
+  async (_, thunkAPI) => {
+    try {
+      return await templateService.fetchClientInfo();
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Search templates
+export const searchTemplates = createAsyncThunk(
+  "templates/search",
+  async (query, thunkAPI) => {
+    try {
+      return await templateService.searchTemplates(query);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+// Apply filters
+export const applyFilters = createAsyncThunk(
+  "templates/applyFilters",
+  async (filters, thunkAPI) => {
+    try {
+      return await templateService.applyFilters(filters);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+const initialState = {
+  list: [],
+  numberOfTemps: { total: 0, filtered: 0 },
+  loading: false,
+  error: null,
+};
+
+const templateSlice = createSlice({
+  name: "templates",
+  initialState,
+  reducers: {
+    reset: (state) => initialState,
+  },
+  extraReducers: (builder) => {
+    builder
+      // FETCH ALL
+      .addCase(fetchTemplates.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTemplates.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload;
+      })
+      .addCase(fetchTemplates.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // SEARCH
+      .addCase(searchTemplates.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchTemplates.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload;
+      })
+      .addCase(searchTemplates.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // APPLY FILTERS
+      .addCase(applyFilters.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(applyFilters.fulfilled, (state, action) => {
+        state.loading = false;
+        state.list = action.payload.data;
+        state.numberOfTemps = {
+          total: action.payload.total,
+          filtered: action.payload.filtered,
+        };
+      })
+      .addCase(applyFilters.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+export const { reset } = templateSlice.actions;
+export default templateSlice.reducer;

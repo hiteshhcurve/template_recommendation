@@ -1,6 +1,6 @@
-import { useState, useContext } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import GlobalContext from "../context/GlobalContext";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setError, setSuccess } from "../features/ui/uiSlice";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
 
@@ -25,11 +25,7 @@ const CreateBrief = () => {
   };
 
   const [formData, setFormData] = useState(initialState);
-  const { setError, setMessage } = useContext(GlobalContext);
-
-  const navigate = useNavigate();
-  const { state } = useLocation();
-  const from = state?.from?.pathname || "/";
+  const dispatch = useDispatch();
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({
@@ -41,7 +37,7 @@ const CreateBrief = () => {
   const triggerEmail = async (data) => {
     try {
       const res = await fetch(
-        `https://selfserve.hockeycurve.com/public/hcgallery/mail`,
+        `https://selfserve.hockeycurve.com/public/hcgallery/mai`,
         {
           method: "POST",
           credentials: "include",
@@ -54,7 +50,7 @@ const CreateBrief = () => {
       console.log(json);
       return true;
     } catch (e) {
-      setError(e);
+      dispatch(setError(e));
       return false;
     }
   };
@@ -64,8 +60,10 @@ const CreateBrief = () => {
     triggerEmail(formData);
     setFormData(initialState);
     if (triggerEmail) {
-      setMessage(
-        "Brief created successfully! Our team will get back to you at the earliest."
+      dispatch(
+        setSuccess(
+          "Brief created successfully! Our team will get back to you at the earliest."
+        )
       );
     }
   };
@@ -127,7 +125,7 @@ const CreateBrief = () => {
             text="Overall Impressions"
             inputFor="overall_impression_volume"
             type="number"
-            value={formData.overall_impression_volume}
+            value={formData.overall_impression_volume.toLocaleString("en-IN")}
             placeholder={"1,000,000"}
             required
             onInput={(val) => handleChange("overall_impression_volume", val)}

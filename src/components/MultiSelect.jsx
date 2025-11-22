@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleChevronDown,
@@ -7,7 +8,7 @@ import {
 import Loader from "./Loader";
 
 const MultiSelect = ({
-  fetchOptions,
+  options = [],
   placeholder = "Select...",
   selected = [],
   onSelectionChange = () => {},
@@ -15,10 +16,9 @@ const MultiSelect = ({
   forceClose = false,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [options, setOptions] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [fetched, setFetched] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const { loading, error } = useSelector((state) => state.filters);
 
   const dropdownRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -44,19 +44,6 @@ const MultiSelect = ({
 
   const toggleDropdown = async () => {
     setDropdownOpen((prev) => !prev);
-
-    if (!fetched && fetchOptions) {
-      setLoading(true);
-      try {
-        const data = await fetchOptions();
-        setOptions(data || []);
-        setFetched(true);
-      } catch (err) {
-        console.error("Failed to fetch options", err);
-      } finally {
-        setLoading(false);
-      }
-    }
 
     // Focus the search box after opening
     setTimeout(() => {
@@ -117,6 +104,8 @@ const MultiSelect = ({
         <div className="dropdown-menu" style={{ position }}>
           {loading ? (
             <Loader size={"sm"} color="#f97316" />
+          ) : error ? (
+            <h3>{error}</h3>
           ) : (
             <>
               <input

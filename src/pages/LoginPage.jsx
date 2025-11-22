@@ -51,6 +51,7 @@ const LoginPage = () => {
       if (!res.ok) throw new Error("Network response was not ok");
 
       const json = await res.json();
+      console.log(json);
     } catch (e) {
       setError(e);
     }

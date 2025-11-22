@@ -1,21 +1,28 @@
-import { useState, useContext } from "react";
-import GlobalContext from "../context/GlobalContext";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setError } from "../features/ui/uiSlice";
 import Card from "./Card";
 import Pagination from "./Pagination";
+import Loader from "./Loader";
 
 const Showcase = () => {
   const [page, setPage] = useState(1);
 
+  const dispatch = useDispatch();
+
+  const { enabled, searchQuery } = useSelector((state) => state.filters);
+
   const {
-    templates: data,
-    searchQuery,
-    filtersEnabled,
-    setError,
-  } = useContext(GlobalContext);
+    list: data,
+    numberOfTemps,
+    loading,
+  } = useSelector((state) => state.templates);
+
+  const { filtered, total } = numberOfTemps;
 
   if (!data) {
-    setError("Error loading data!");
-    return null;
+    dispatch(setError("Error loading data!"));
+    return;
   }
 
   const pageSize = 15;
@@ -24,17 +31,24 @@ const Showcase = () => {
   const endIndex = startIndex + pageSize;
 
   const currentData = data.slice(startIndex, endIndex);
+
+  if (loading) {
+    return <Loader size="lg" color="#f97316" />;
+  }
+
   return (
     <>
       <section id="showcase">
-        {searchQuery !== "" && (
+        {searchQuery && (
           <h2 className="template-header">
             Showing results for "{searchQuery}"
           </h2>
         )}
 
-        {filtersEnabled && (
-          <h2 className="template-header">Showing filtered results</h2>
+        {enabled && (
+          <h2 className="template-header">
+            Showing filtered results: {filtered} / {total}
+          </h2>
         )}
 
         <div className="template-grid">

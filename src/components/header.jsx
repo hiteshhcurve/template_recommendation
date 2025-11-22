@@ -1,37 +1,20 @@
-import { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { resetFilters } from "../features/filters/filterSlice";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
-import GlobalContext from "../context/GlobalContext";
 import Button from "./Button";
 
 const Header = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const dispatch = useDispatch();
 
   const isLoginPage = pathname === "/create-brief";
-
-  const {
-    setSearchQuery,
-    setSelectedClients,
-    setSelectedIndustryTags1,
-    setSelectedIndustryTags2,
-    setSelectedIndustryTags3,
-    setFiltersEnabled,
-    setError,
-    setMessage,
-  } = useContext(GlobalContext);
 
   const handleLogoClick = (e) => {
     e.preventDefault();
 
-    setSearchQuery("");
-    setSelectedClients([]);
-    setSelectedIndustryTags1([]);
-    setSelectedIndustryTags2([]);
-    setSelectedIndustryTags3([]);
-    setFiltersEnabled(false);
-    setError("");
-    setMessage("");
+    dispatch(resetFilters());
     navigate("/");
   };
 

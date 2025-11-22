@@ -1,18 +1,18 @@
-import { useContext } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import GlobalContext from "./context/GlobalContext";
+import { useSelector } from "react-redux";
+import useRouteLoader from "./hooks/useRouteLoader";
 import Header from "./components/Header";
 import Navigation from "./components/Navigation";
 import Showcase from "./components/Showcase";
-import Loader from "./components/Loader";
 import Error from "./components/Error";
+import Success from "./components/Success";
 import CreateBrief from "./pages/CreateBrief";
 import "./App.scss";
-import Success from "./components/Success";
 
 const App = () => {
-  const { loading, error, message } = useContext(GlobalContext);
+  useRouteLoader();
 
+  const { globalError, globalSuccess } = useSelector((state) => state.ui);
   const { pathname } = useLocation();
 
   const isLoginPage = pathname === "/create-brief";
@@ -24,23 +24,19 @@ const App = () => {
 
       <main className="main-content">
         <div className="container">
-          {loading ? (
-            <Loader size="lg" color="#f97316" />
-          ) : error ? (
-            <Error msg={error} />
-          ) : message ? (
-            <Success msg={message} />
-          ) : (
-            <Routes>
-              <Route path="/" element={<Showcase />} />
+          <Routes>
+            <Route path="/" element={<Showcase />} />
 
-              <Route path="/search/:query" element={<Showcase />} />
+            <Route path="/search/:query" element={<Showcase />} />
 
-              <Route path="/filter/:filters" element={<Showcase />} />
+            <Route path="/filter/:filters" element={<Showcase />} />
 
-              <Route path="/create-brief" element={<CreateBrief />} />
-            </Routes>
-          )}
+            <Route path="/create-brief" element={<CreateBrief />} />
+
+            <Route path="/error" element={<Error msg={globalError} />} />
+
+            <Route path="/success" element={<Success msg={globalSuccess} />} />
+          </Routes>
         </div>
       </main>
     </div>
