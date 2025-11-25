@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const uiSlice = createSlice({
   name: "ui",
   initialState: {
+    page: 1,
     globalError: null,
     globalSuccess: null,
   },
@@ -19,10 +20,13 @@ const uiSlice = createSlice({
     clearSuccess(state) {
       state.globalSuccess = null;
     },
+    setPage(state, action) {
+      state.page = action.payload;
+    },
   },
 });
 
-export const { setError, clearError, setSuccess, clearSuccess } =
+export const { setError, clearError, setSuccess, clearSuccess, setPage } =
   uiSlice.actions;
 
 export default uiSlice.reducer;

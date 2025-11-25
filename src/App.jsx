@@ -1,9 +1,9 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useRouteLoader from "./hooks/useRouteLoader";
-import Header from "./components/header";
+import Header from "./components/Header";
 import Navigation from "./components/Navigation";
-import Showcase from "./components/showcase";
+import Showcase from "./components/Showcase";
 import Error from "./components/Error";
 import Success from "./components/Success";
 import CreateBrief from "./pages/CreateBrief";

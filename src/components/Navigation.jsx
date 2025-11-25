@@ -7,6 +7,7 @@ import {
   setSelectedIndustryTags2,
   setSelectedIndustryTags3,
 } from "../features/filters/filterSlice";
+import { setPage } from "../features/ui/uiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import FilterModal from "./FilterModal";
@@ -24,6 +25,8 @@ const Navigation = () => {
   const { clients, industry_tag1, industry_tag2, industry_tag3 } = useSelector(
     (state) => state.filters.filters
   );
+
+  const { preagency, preclient } = useSelector((state) => state.filters.params);
 
   const {
     clients: selectedClients,
@@ -44,10 +47,13 @@ const Navigation = () => {
         industryTags1: selectedIndustryTags1,
         industryTags2: selectedIndustryTags2,
         industryTags3: selectedIndustryTags3,
+        preagency: preagency,
+        preclient: preclient,
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
 
+      dispatch(setPage(1));
       navigate(`/filter/${encodedQuery}`);
     } else {
       navigate("/");

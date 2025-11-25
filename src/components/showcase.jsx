@@ -1,13 +1,10 @@
-import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setError } from "../features/ui/uiSlice";
+import { setError, setPage } from "../features/ui/uiSlice";
 import Card from "./Card";
 import Pagination from "./Pagination";
 import Loader from "./Loader";
 
 const Showcase = () => {
-  const [page, setPage] = useState(1);
-
   const dispatch = useDispatch();
 
   const { enabled, searchQuery } = useSelector((state) => state.filters);
@@ -19,6 +16,8 @@ const Showcase = () => {
   } = useSelector((state) => state.templates);
 
   const { filtered, total } = numberOfTemps;
+
+  const { page } = useSelector((state) => state.ui);
 
   if (!data) {
     dispatch(setError("Error loading data!"));
@@ -66,7 +65,7 @@ const Showcase = () => {
         page={page}
         pageSize={pageSize}
         totalItems={totalItems}
-        setPage={setPage}
+        setPage={(page) => dispatch(setPage(page))}
       />
     </>
   );
