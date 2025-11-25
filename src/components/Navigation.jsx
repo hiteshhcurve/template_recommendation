@@ -20,7 +20,7 @@ const Navigation = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
-  const isLoginPage = pathname === "/login";
+  const isLoginPage = pathname.includes("/create-brief/");
 
   const { clients, industry_tag1, industry_tag2, industry_tag3 } = useSelector(
     (state) => state.filters.filters
