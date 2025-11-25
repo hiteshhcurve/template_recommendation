@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import { setError, setSuccess } from "../features/ui/uiSlice";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
@@ -25,7 +26,15 @@ const CreateBrief = () => {
   };
 
   const [formData, setFormData] = useState(initialState);
+  const [params, setParams] = useState({ agency: "", client: "" });
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    const encoded = pathname.split("/")[2];
+    const decoded = JSON.parse(atob(encoded));
+    setParams(() => ({ agency: decoded.preagency, client: decoded.preclient }));
+  }, []);
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({
@@ -35,20 +44,28 @@ const CreateBrief = () => {
   };
 
   const triggerEmail = async (data) => {
+    const bodyData = {
+      ...data,
+      ...params,
+    };
     try {
       const res = await fetch(
-        `https://selfserve.hockeycurve.com/public/hcgallery/mai`,
+        `https://selfserve.hockeycurve.com/public/hcgallery/mail`,
         {
           method: "POST",
           credentials: "include",
-          body: JSON.stringify(data),
+          body: JSON.stringify(bodyData),
         }
       );
       if (!res.ok) throw new Error("Network response was not ok");
 
       const json = await res.json();
       console.log(json);
-      return true;
+      if (json.status === 200) {
+        return true;
+      } else {
+        return false;
+      }
     } catch (e) {
       dispatch(setError(e));
       return false;

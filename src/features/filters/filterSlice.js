@@ -26,6 +26,10 @@ const initialState = {
     industry_tag2: [],
     industry_tag3: [],
   },
+  params: {
+    preagency: "",
+    preclient: "",
+  },
   searchQuery: null,
   enabled: false,
   loading: false,
@@ -47,6 +51,9 @@ const filterSlice = createSlice({
     },
     setSelectedIndustryTags3: (state, action) => {
       state.selected.industry_tag3 = action.payload;
+    },
+    setParams: (state, action) => {
+      state.params = action.payload;
     },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
@@ -84,6 +91,7 @@ export const {
   setSelectedIndustryTags1,
   setSelectedIndustryTags2,
   setSelectedIndustryTags3,
+  setParams,
   setSearchQuery,
   enableFilters,
   resetFilters,

@@ -16,6 +16,7 @@ import {
   setSearchQuery,
   enableFilters,
   resetFilters,
+  setParams,
 } from "../features/filters/filterSlice";
 
 export default function useRouteLoader() {
@@ -46,6 +47,12 @@ export default function useRouteLoader() {
       dispatch(setSelectedIndustryTags1(decoded.industryTags1));
       dispatch(setSelectedIndustryTags2(decoded.industryTags2));
       dispatch(setSelectedIndustryTags3(decoded.industryTags3));
+      dispatch(
+        setParams({
+          preagency: decoded?.preagency,
+          preclient: decoded.preclient,
+        })
+      );
       dispatch(applyFilters(decoded));
       return;
     }
