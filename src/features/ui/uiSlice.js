@@ -4,10 +4,17 @@ const uiSlice = createSlice({
   name: "ui",
   initialState: {
     page: 1,
+    globalLoading: false,
     globalError: null,
     globalSuccess: null,
   },
   reducers: {
+    setPage(state, action) {
+      state.page = action.payload;
+    },
+    setGlobalLoading(state, action) {
+      state.globalLoading = action.payload;
+    },
     setError(state, action) {
       state.globalError = action.payload;
     },
@@ -20,13 +27,16 @@ const uiSlice = createSlice({
     clearSuccess(state) {
       state.globalSuccess = null;
     },
-    setPage(state, action) {
-      state.page = action.payload;
-    },
   },
 });
 
-export const { setError, clearError, setSuccess, clearSuccess, setPage } =
-  uiSlice.actions;
+export const {
+  setPage,
+  setGlobalLoading,
+  setError,
+  clearError,
+  setSuccess,
+  clearSuccess,
+} = uiSlice.actions;
 
 export default uiSlice.reducer;

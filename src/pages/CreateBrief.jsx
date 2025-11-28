@@ -1,14 +1,20 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { setError, setSuccess } from "../features/ui/uiSlice";
+import { setParams } from "../features/filters/filterSlice";
+import { setGlobalLoading, setError, setSuccess } from "../features/ui/uiSlice";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
+import Loader from "../components/Loader";
+import Error from "../components/Error";
+import Success from "../components/Success";
 
 const CreateBrief = () => {
   const initialState = {
     campaign_name: "",
     campaign_type: "Live",
+    agency: "",
+    client: "",
     start_date: "",
     end_date: "",
     overall_impression_volume: "",
@@ -19,22 +25,39 @@ const CreateBrief = () => {
     targeting: "",
     geo: "",
     languages: "",
-    dsp: "",
+    dsp: "DV360",
     trackers: "",
     landing_page: "",
     cta_copy: "",
+    templates: [],
   };
 
   const [formData, setFormData] = useState(initialState);
-  const [params, setParams] = useState({ agency: "", client: "" });
+  const [hasAgencyClient, setHasAgencyClient] = useState(false);
+  const { globalLoading, globalError, globalSuccess } = useSelector(
+    (state) => state.ui
+  );
+  const { params } = useSelector((state) => state.filters);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const encoded = pathname.split("/")[2];
-    const decoded = JSON.parse(atob(encoded));
-    setParams(() => ({ agency: decoded.preagency, client: decoded.preclient }));
-  }, []);
+    const decoded = JSON.parse(atob(pathname.split("/create-brief/")[1]));
+    const selectedIDs = decoded.templates;
+    const urlParams = decoded.params;
+
+    if (params.agency === "" && params.client === "") {
+      dispatch(setParams(urlParams));
+    }
+    setHasAgencyClient(params.agency && params.client);
+
+    setFormData((prev) => ({
+      ...prev,
+      templates: selectedIDs,
+      agency: params.agency,
+      client: params.client,
+    }));
+  }, [pathname, dispatch, params]);
 
   const handleChange = (name, value) => {
     setFormData((prev) => ({
@@ -44,46 +67,59 @@ const CreateBrief = () => {
   };
 
   const triggerEmail = async (data) => {
-    const bodyData = {
-      ...data,
-      ...params,
-    };
     try {
       const res = await fetch(
         `https://selfserve.hockeycurve.com/public/hcgallery/mail`,
         {
           method: "POST",
-          credentials: "include",
-          body: JSON.stringify(bodyData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         }
       );
+
       if (!res.ok) throw new Error("Network response was not ok");
 
       const json = await res.json();
-      console.log(json);
-      if (json.status === 200) {
-        return true;
-      } else {
-        return false;
-      }
+      return json.status === 200;
     } catch (e) {
-      dispatch(setError(e));
+      dispatch(setError(e.message));
       return false;
     }
   };
 
-  const submitForm = (e) => {
+  const submitForm = async (e) => {
     e.preventDefault();
-    triggerEmail(formData);
-    setFormData(initialState);
-    if (triggerEmail) {
+
+    dispatch(setGlobalLoading(true));
+
+    const success = await triggerEmail(formData);
+
+    if (success) {
       dispatch(
         setSuccess(
           "Brief created successfully! Our team will get back to you at the earliest."
         )
       );
+      setFormData(initialState);
+      dispatch(setGlobalLoading(false));
+    } else {
+      dispatch(setError("Failed to send mail. Please try again."));
     }
   };
+
+  if (globalLoading) {
+    return <Loader size="lg" color="#f97316" />;
+  }
+
+  if (globalError) {
+    return <Error message={globalError} />;
+  }
+
+  if (globalSuccess) {
+    return <Success message={globalSuccess} />;
+  }
 
   return (
     <section className="login">
@@ -116,6 +152,30 @@ const CreateBrief = () => {
           required
           onInput={(val) => handleChange("campaign_type", val)}
         />
+
+        {!hasAgencyClient && (
+          <div className="flex">
+            <FormInput
+              text="Agency Name"
+              inputFor="agency"
+              type="text"
+              placeholder={"Agency Name"}
+              value={formData.agency}
+              required
+              onInput={(val) => handleChange("agency", val)}
+            />
+
+            <FormInput
+              text="Client Name"
+              inputFor="client"
+              type="text"
+              placeholder={"Client Name"}
+              value={formData.client}
+              required
+              onInput={(val) => handleChange("client", val)}
+            />
+          </div>
+        )}
 
         <div className="flex">
           <FormInput
@@ -181,7 +241,7 @@ const CreateBrief = () => {
           />
 
           <FormInput
-            text="Ad TYpe"
+            text="Ad Type"
             inputFor="ad_type"
             type="select"
             options={["Display", "Video", "Both"]}

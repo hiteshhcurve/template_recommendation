@@ -1,21 +1,52 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilters } from "../features/filters/filterSlice";
-import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleCheck,
+  faRightToBracket,
+} from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const { preagency, preclient } = useSelector((state) => state.filters.params);
-  const isLoginPage = pathname === "/create-brief";
+  const { pathname } = useLocation();
+  const { selected } = useSelector((state) => state.templates);
+  const { params } = useSelector((state) => state.filters);
+
+  const isLoginPage = pathname.includes("/selected");
 
   const handleLogoClick = (e) => {
     e.preventDefault();
 
+    const query = {
+      params,
+    };
+
+    const encodedQuery = btoa(JSON.stringify(query));
+
     dispatch(resetFilters());
-    navigate("/");
+    navigate(`/${encodedQuery}`);
+  };
+
+  const handleNavigate = () => {
+    if (pathname.includes("/selected/")) {
+      const query = {
+        params,
+        templates: selected?.map((s) => s.preset_id),
+      };
+
+      const encodedQuery = btoa(JSON.stringify(query));
+      navigate(`/create-brief/${encodedQuery}`);
+    } else {
+      const query = {
+        params,
+        templates: selected?.map((s) => s.id),
+      };
+
+      const encodedQuery = btoa(JSON.stringify(query));
+      navigate(`/selected/${encodedQuery}`);
+    }
   };
 
   return (
@@ -34,21 +65,24 @@ const Header = () => {
               </div>
             </div>
 
-            {!isLoginPage && preagency && preclient && (
+            {selected?.length > 0 && !isLoginPage && (
+              <div className="header-right">
+                <Button
+                  icon={faCircleCheck}
+                  text={`Selected (${selected.length})`}
+                  btnType={"secondary"}
+                  onClick={handleNavigate}
+                />
+              </div>
+            )}
+
+            {isLoginPage && (
               <div className="header-right">
                 <Button
                   icon={faRightToBracket}
-                  text={"Campaign Brief"}
+                  text={`Create Brief`}
                   btnType={"secondary"}
-                  onClick={() => {
-                    let encode = btoa(
-                      JSON.stringify({
-                        preagency: preagency,
-                        preclient: preclient,
-                      })
-                    );
-                    navigate(`/create-brief/${encode}`);
-                  }}
+                  onClick={handleNavigate}
                 />
               </div>
             )}

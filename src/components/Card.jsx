@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
-import { faEye } from "@fortawesome/free-solid-svg-icons";
 
-const Card = ({ template }) => {
+const Card = ({ template, selected, selectTemplate }) => {
   const { title, desc, thumbnail, meta_tags, videos_images, adpreviews } =
     template;
 
@@ -13,15 +14,25 @@ const Card = ({ template }) => {
 
   const encodedPreview = btoa(adpreviews);
 
+  const handleSelect = () => {
+    selectTemplate(template);
+  };
+
   return (
     <div className="template-card">
-      <div className="card-image-container">
+      <div className="card-image-container" onClick={handleSelect}>
         <img
           src={imageLink || null}
           alt={title}
           className="card-image"
           loading="lazy"
         />
+
+        {selected && (
+          <div className="selected-overlay">
+            <FontAwesomeIcon icon={faCircleCheck} className="selected-icon" />
+          </div>
+        )}
       </div>
 
       <div className="card-header">

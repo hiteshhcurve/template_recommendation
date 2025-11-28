@@ -42,11 +42,23 @@ const applyFilters = async (queryObj) => {
   };
 };
 
+const fetchSelected = async (queryArr) => {
+  const res = await fetch(`${apiURL}/get_selected`, {
+    method: "POST",
+    credentials: "include",
+    body: JSON.stringify({ query: queryArr }),
+  });
+  const json = await res.json();
+
+  return json.data;
+};
+
 const templateService = {
   fetchTemplates,
   fetchClientInfo,
   searchTemplates,
   applyFilters,
+  fetchSelected,
 };
 
 export default templateService;

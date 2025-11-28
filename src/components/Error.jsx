@@ -10,10 +10,19 @@ const Error = () => {
   const dispatch = useDispatch();
 
   const { globalError } = useSelector((state) => state.ui);
+  const params = useSelector((state) => state.filters.params);
 
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    const query = {
+      params,
+    };
+
+    const encodedQuery = btoa(JSON.stringify(query));
+
     dispatch(clearError());
-    navigate("/");
+    navigate(`/${encodedQuery}`);
   };
 
   return (

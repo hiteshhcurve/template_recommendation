@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setPage } from "../features/ui/uiSlice";
+import { setSelectedTemplates } from "../features/templates/templateSlice";
+import { toast } from "react-toastify";
 import Card from "./Card";
 import Pagination from "./Pagination";
 import Loader from "./Loader";
@@ -11,6 +13,7 @@ const Showcase = () => {
 
   const {
     list: data,
+    selected,
     numberOfTemps,
     loading,
   } = useSelector((state) => state.templates);
@@ -23,6 +26,23 @@ const Showcase = () => {
     dispatch(setError("Error loading data!"));
     return;
   }
+
+  const selectTemplate = (temp) => {
+    if (selected.length >= 10) {
+      toast.error("You can select up to 10 templates only");
+      return;
+    }
+
+    const updated = [...selected, temp];
+
+    dispatch(setSelectedTemplates(updated));
+  };
+
+  const unselectTemplate = (temp) => {
+    const updated = selected.filter((s) => s.id !== temp.id);
+
+    dispatch(setSelectedTemplates(updated));
+  };
 
   const pageSize = 15;
   const totalItems = data.length;
@@ -52,9 +72,20 @@ const Showcase = () => {
 
         <div className="template-grid">
           {currentData.length !== 0 ? (
-            currentData.map((template) => (
-              <Card key={template.id} template={template} />
-            ))
+            currentData.map((template) => {
+              const isSelected = selected.some((t) => t.id === template.id);
+
+              return (
+                <Card
+                  key={template.id}
+                  template={template}
+                  selected={isSelected}
+                  selectTemplate={
+                    isSelected ? unselectTemplate : selectTemplate
+                  }
+                />
+              );
+            })
           ) : (
             <h2>No templates found</h2>
           )}

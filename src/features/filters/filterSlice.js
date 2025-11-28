@@ -27,8 +27,8 @@ const initialState = {
     industry_tag3: [],
   },
   params: {
-    preagency: "",
-    preclient: "",
+    agency: "",
+    client: "",
   },
   searchQuery: null,
   enabled: false,
@@ -53,7 +53,8 @@ const filterSlice = createSlice({
       state.selected.industry_tag3 = action.payload;
     },
     setParams: (state, action) => {
-      state.params = action.payload;
+      state.params.agency = action.payload.agency;
+      state.params.client = action.payload.client;
     },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;

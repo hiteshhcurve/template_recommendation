@@ -49,8 +49,21 @@ export const applyFilters = createAsyncThunk(
   }
 );
 
+// Fetch selected templates
+export const fetchSelected = createAsyncThunk(
+  "templates/fetchSelected",
+  async (ids, thunkAPI) => {
+    try {
+      return await templateService.fetchSelected(ids);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   list: [],
+  selected: [],
   numberOfTemps: { total: 0, filtered: 0 },
   loading: false,
   error: null,
@@ -60,6 +73,9 @@ const templateSlice = createSlice({
   name: "templates",
   initialState,
   reducers: {
+    setSelectedTemplates: (state, action) => {
+      state.selected = action.payload;
+    },
     reset: (state) => initialState,
   },
   extraReducers: (builder) => {
@@ -105,9 +121,22 @@ const templateSlice = createSlice({
       .addCase(applyFilters.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // FETCH SELECTED TEMPLATES
+      .addCase(fetchSelected.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchSelected.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selected = action.payload;
+      })
+      .addCase(fetchSelected.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
 
-export const { reset } = templateSlice.actions;
+export const { setSelectedTemplates, reset } = templateSlice.actions;
 export default templateSlice.reducer;

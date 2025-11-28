@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setSelectedClients,
@@ -18,15 +18,12 @@ const Navigation = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
-
-  const isLoginPage = pathname.includes("/create-brief/");
 
   const { clients, industry_tag1, industry_tag2, industry_tag3 } = useSelector(
     (state) => state.filters.filters
   );
 
-  const { preagency, preclient } = useSelector((state) => state.filters.params);
+  const { params } = useSelector((state) => state.filters);
 
   const {
     clients: selectedClients,
@@ -47,8 +44,7 @@ const Navigation = () => {
         industryTags1: selectedIndustryTags1,
         industryTags2: selectedIndustryTags2,
         industryTags3: selectedIndustryTags3,
-        preagency: preagency,
-        preclient: preclient,
+        params,
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
@@ -65,68 +61,64 @@ const Navigation = () => {
   return (
     <section className="navigation">
       <div className="container">
-        {!isLoginPage && (
-          <>
-            <div className="nav-content filter-drops">
-              <MultiSelect
-                options={clients}
-                selected={selectedClients}
-                onSelectionChange={(item) => {
-                  dispatch(setSelectedClients(item));
-                }}
-                placeholder="Clients..."
-                position="absolute"
-              />
+        <div className="nav-content filter-drops">
+          <MultiSelect
+            options={clients}
+            selected={selectedClients}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedClients(item));
+            }}
+            placeholder="Clients..."
+            position="absolute"
+          />
 
-              <MultiSelect
-                options={industry_tag1}
-                selected={selectedIndustryTags1}
-                onSelectionChange={(item) => {
-                  dispatch(setSelectedIndustryTags1(item));
-                }}
-                placeholder="Industry Tags 1..."
-                position="absolute"
-              />
+          <MultiSelect
+            options={industry_tag1}
+            selected={selectedIndustryTags1}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedIndustryTags1(item));
+            }}
+            placeholder="Industry Tags 1..."
+            position="absolute"
+          />
 
-              <MultiSelect
-                options={industry_tag2}
-                selected={selectedIndustryTags2}
-                onSelectionChange={(item) => {
-                  dispatch(setSelectedIndustryTags2(item));
-                }}
-                placeholder="Industry Tags 2..."
-                position="absolute"
-              />
+          <MultiSelect
+            options={industry_tag2}
+            selected={selectedIndustryTags2}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedIndustryTags2(item));
+            }}
+            placeholder="Industry Tags 2..."
+            position="absolute"
+          />
 
-              <MultiSelect
-                options={industry_tag3}
-                selected={selectedIndustryTags3}
-                onSelectionChange={(item) => {
-                  dispatch(setSelectedIndustryTags3(item));
-                }}
-                placeholder="Industry Tags 3..."
-                position="absolute"
-              />
+          <MultiSelect
+            options={industry_tag3}
+            selected={selectedIndustryTags3}
+            onSelectionChange={(item) => {
+              dispatch(setSelectedIndustryTags3(item));
+            }}
+            placeholder="Industry Tags 3..."
+            position="absolute"
+          />
 
-              <Button
-                text="Filter"
-                icon={faFilter}
-                onClick={submitFilters}
-                btnType={"primary"}
-              />
-            </div>
+          <Button
+            text="Filter"
+            icon={faFilter}
+            onClick={submitFilters}
+            btnType={"primary"}
+          />
+        </div>
 
-            <div className="nav-right">
-              <button
-                className="filter-btn"
-                onClick={() => setIsFiltersModalOpen(true)}
-              >
-                <FontAwesomeIcon icon={faFilter} />
-                Filters
-              </button>
-            </div>
-          </>
-        )}
+        <div className="nav-right">
+          <button
+            className="filter-btn"
+            onClick={() => setIsFiltersModalOpen(true)}
+          >
+            <FontAwesomeIcon icon={faFilter} />
+            Filters
+          </button>
+        </div>
       </div>
 
       <FilterModal
