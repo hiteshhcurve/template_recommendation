@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useMemo, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import {
   setSelectedTemplates,
@@ -11,25 +11,68 @@ import Loader from "./Loader";
 
 const Selected = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
+  const ignoreDecode = useRef(false); // <-- IMPORTANT FIX
+
   const { selected, loading } = useSelector((state) => state.templates);
+  const { params } = useSelector((state) => state.filters);
 
+  const decodedData = useMemo(() => {
+    if (ignoreDecode.current) return null; // prevent re-decoding
+
+    try {
+      const encoded = pathname.split("/selected/")[1] || "";
+      if (!encoded) return null;
+      return JSON.parse(atob(encoded));
+    } catch (err) {
+      console.error("Invalid encoded selected route");
+      return null;
+    }
+  }, [pathname]);
+
+  const selectedIDs = decodedData?.templates || [];
+  const decodedParams = decodedData?.params || {};
+
+  // Load templates only once on page load
   useEffect(() => {
-    const decoded = JSON.parse(atob(pathname.split("/selected/")[1]));
+    if (!decodedData) return;
 
-    const selectedIDs = decoded.templates;
-    const params = decoded.params;
+    dispatch(setParams(decodedParams));
 
-    dispatch(setParams(params));
-    if (selected.length === 0) {
+    if (selected.length === 0 && selectedIDs.length > 0) {
       dispatch(fetchSelected(selectedIDs));
     }
-  }, [selected, dispatch, pathname]);
+  }, [decodedData]);
+
+  // Sync URL with selected templates
+  useEffect(() => {
+    if (loading) return;
+
+    if (selected.length === 0) {
+      // User unselected all
+      ignoreDecode.current = true;
+
+      const encoded = btoa(JSON.stringify({ params }));
+      navigate(`/${encoded}`);
+      return;
+    }
+
+    // Otherwise update the /selected route
+    const encoded = btoa(
+      JSON.stringify({ templates: selected.map((s) => s.id), params })
+    );
+
+    ignoreDecode.current = true;
+    navigate(`/selected/${encoded}`);
+  }, [selected, loading]);
 
   const unselectTemplate = (temp) => {
-    const updated = selected.filter((s) => s.id !== temp.id);
+    // Prevent decode of old URL after clicking unselect
+    ignoreDecode.current = true;
 
+    const updated = selected.filter((s) => s.id !== temp.id);
     dispatch(setSelectedTemplates(updated));
   };
 
@@ -38,28 +81,22 @@ const Selected = () => {
   }
 
   return (
-    <>
-      <section id="showcase">
-        <div className="template-grid">
-          {selected.length !== 0 ? (
-            selected.map((template) => {
-              const isSelected = selected.some((t) => t.id === template.id);
-
-              return (
-                <Card
-                  key={template.id}
-                  template={template}
-                  selected={isSelected}
-                  selectTemplate={unselectTemplate}
-                />
-              );
-            })
-          ) : (
-            <h2>Please select the templates</h2>
-          )}
-        </div>
-      </section>
-    </>
+    <section id="showcase">
+      <div className="template-grid">
+        {selected.length > 0 ? (
+          selected.map((template) => (
+            <Card
+              key={template.id}
+              template={template}
+              selected={true}
+              selectTemplate={unselectTemplate}
+            />
+          ))
+        ) : (
+          <h2>Please select the templates</h2>
+        )}
+      </div>
+    </section>
   );
 };
 

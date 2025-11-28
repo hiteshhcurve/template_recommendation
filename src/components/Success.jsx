@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { clearSuccess } from "../features/ui/uiSlice";
+import { setSelectedTemplates } from "../features/templates/templateSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
@@ -22,6 +23,7 @@ const Success = () => {
     const encodedQuery = btoa(JSON.stringify(query));
 
     dispatch(clearSuccess());
+    dispatch(setSelectedTemplates([]));
     navigate(`/${encodedQuery}`);
   };
 

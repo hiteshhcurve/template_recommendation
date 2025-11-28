@@ -6,6 +6,7 @@ import {
   setSelectedIndustryTags1,
   setSelectedIndustryTags2,
   setSelectedIndustryTags3,
+  resetFilters,
 } from "../features/filters/filterSlice";
 import { setPage } from "../features/ui/uiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,7 +53,14 @@ const Navigation = () => {
       dispatch(setPage(1));
       navigate(`/filter/${encodedQuery}`);
     } else {
-      navigate("/");
+      const query = {
+        params,
+      };
+
+      const encodedQuery = btoa(JSON.stringify(query));
+
+      dispatch(resetFilters());
+      navigate(`/${encodedQuery}`);
     }
 
     if (isFiltersModalOpen) setIsFiltersModalOpen(false);

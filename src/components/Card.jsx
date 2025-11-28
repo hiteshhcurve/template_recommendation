@@ -55,18 +55,31 @@ const Card = ({ template, selected, selectTemplate }) => {
           ""
         )}
 
-        <Link
-          to={`https://selfserve.hockeycurve.com/public/adtag/blog2.php?d=${encodedPreview}`}
-          target="_blank"
-        >
+        <div className="grid-2">
+          <Link
+            to={`https://selfserve.hockeycurve.com/public/adtag/blog2.php?d=${encodedPreview}`}
+            target="_blank"
+            style={{ display: "block" }}
+            className="flex-1"
+          >
+            <Button
+              text="View"
+              icon={faEye}
+              type={"button"}
+              width={"full"}
+              btnType={"primary"}
+            />
+          </Link>
+
           <Button
-            text="View Template"
-            icon={faEye}
+            text={selected ? "Unselect" : "Select"}
+            icon={faCircleCheck}
             type={"button"}
             width={"full"}
-            btnType={"primary"}
+            btnType={"secondary"}
+            onClick={handleSelect}
           />
-        </Link>
+        </div>
       </div>
     </div>
   );

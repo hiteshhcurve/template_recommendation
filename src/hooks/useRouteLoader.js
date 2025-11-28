@@ -72,22 +72,25 @@ export default function useRouteLoader() {
     }
 
     const encoded = pathname.split("/")[1];
-    let decoded = {};
 
-    try {
-      decoded = JSON.parse(atob(encoded));
-    } catch (e) {
-      console.error("Invalid filter encoding:", e);
-      return;
+    if (encoded) {
+      let decoded = {};
+
+      try {
+        decoded = JSON.parse(atob(encoded));
+      } catch (e) {
+        console.error("Invalid filter encoding:", e);
+        return;
+      }
+
+      const params = decoded.params;
+      dispatch(setParams(params));
     }
-
-    const params = decoded.params;
 
     dispatch(fetchTemplates());
     dispatch(fetchClientInfo());
     dispatch(fetchFilters());
     dispatch(resetFilters());
     dispatch(enableFilters(false));
-    dispatch(setParams(params));
   }, [pathname, dispatch]);
 }

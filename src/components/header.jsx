@@ -1,9 +1,10 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilters } from "../features/filters/filterSlice";
+import { setSelectedTemplates } from "../features/templates/templateSlice";
 import {
-  faCircleCheck,
   faRightToBracket,
+  faCartShopping,
 } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 
@@ -26,6 +27,7 @@ const Header = () => {
     const encodedQuery = btoa(JSON.stringify(query));
 
     dispatch(resetFilters());
+    dispatch(setSelectedTemplates([]));
     navigate(`/${encodedQuery}`);
   };
 
@@ -65,13 +67,14 @@ const Header = () => {
               </div>
             </div>
 
-            {selected?.length > 0 && !isLoginPage && (
+            {!isLoginPage && (
               <div className="header-right">
                 <Button
-                  icon={faCircleCheck}
-                  text={`Selected (${selected.length})`}
+                  icon={faCartShopping}
+                  text={`View Cart (${selected.length})`}
                   btnType={"secondary"}
-                  onClick={handleNavigate}
+                  onClick={selected.length !== 0 ? handleNavigate : null}
+                  disabled={selected.length === 0}
                 />
               </div>
             )}

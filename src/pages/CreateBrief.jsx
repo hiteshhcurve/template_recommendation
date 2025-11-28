@@ -30,6 +30,7 @@ const CreateBrief = () => {
     landing_page: "",
     cta_copy: "",
     templates: [],
+    notes: "",
   };
 
   const [formData, setFormData] = useState(initialState);
@@ -331,6 +332,15 @@ const CreateBrief = () => {
           placeholder={"Enter your email"}
           required
           onInput={(val) => handleChange("emailid", val)}
+        />
+
+        <FormInput
+          text="Additional Notes"
+          inputFor="notes"
+          type="textarea"
+          value={formData.notes}
+          placeholder={"Additional information or requirements"}
+          onInput={(val) => handleChange("notes", val)}
         />
 
         <Button text="Submit Brief" type="submit" btnType={"primary"} />
