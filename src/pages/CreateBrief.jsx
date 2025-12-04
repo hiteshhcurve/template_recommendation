@@ -195,6 +195,7 @@ const CreateBrief = () => {
             value={formData.end_date}
             required
             onInput={(val) => handleChange("end_date", val)}
+            options={{ startDateValue: formData.start_date }}
           />
         </div>
 
@@ -203,7 +204,7 @@ const CreateBrief = () => {
             text="Overall Impressions"
             inputFor="overall_impression_volume"
             type="number"
-            value={formData.overall_impression_volume.toLocaleString("en-IN")}
+            value={formData.overall_impression_volume}
             placeholder={"1,000,000"}
             required
             onInput={(val) => handleChange("overall_impression_volume", val)}
@@ -259,7 +260,6 @@ const CreateBrief = () => {
             type="text"
             value={formData.targeting}
             placeholder={"Targeting"}
-            required
             onInput={(val) => handleChange("targeting", val)}
           />
 
@@ -269,7 +269,6 @@ const CreateBrief = () => {
             type="text"
             value={formData.geo}
             placeholder={"eg., US,IN,UK"}
-            required
             onInput={(val) => handleChange("geo", val)}
           />
 
@@ -290,7 +289,6 @@ const CreateBrief = () => {
           type="text"
           value={formData.languages}
           placeholder={"eg., Hindi,English,Marathi"}
-          required
           onInput={(val) => handleChange("languages", val)}
         />
 
@@ -300,7 +298,6 @@ const CreateBrief = () => {
           type="text"
           value={formData.trackers}
           placeholder={"Trackers Sheet Link"}
-          required
           onInput={(val) => handleChange("trackers", val)}
         />
 

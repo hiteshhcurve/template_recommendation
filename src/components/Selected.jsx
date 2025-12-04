@@ -14,13 +14,13 @@ const Selected = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const ignoreDecode = useRef(false); // <-- IMPORTANT FIX
+  const ignoreDecode = useRef(false);
 
   const { selected, loading } = useSelector((state) => state.templates);
   const { params } = useSelector((state) => state.filters);
 
   const decodedData = useMemo(() => {
-    if (ignoreDecode.current) return null; // prevent re-decoding
+    if (ignoreDecode.current) return null;
 
     try {
       const encoded = pathname.split("/selected/")[1] || "";
@@ -35,7 +35,6 @@ const Selected = () => {
   const selectedIDs = decodedData?.templates || [];
   const decodedParams = decodedData?.params || {};
 
-  // Load templates only once on page load
   useEffect(() => {
     if (!decodedData) return;
 
@@ -46,12 +45,10 @@ const Selected = () => {
     }
   }, [decodedData]);
 
-  // Sync URL with selected templates
   useEffect(() => {
     if (loading) return;
 
     if (selected.length === 0) {
-      // User unselected all
       ignoreDecode.current = true;
 
       const encoded = btoa(JSON.stringify({ params }));
@@ -59,7 +56,6 @@ const Selected = () => {
       return;
     }
 
-    // Otherwise update the /selected route
     const encoded = btoa(
       JSON.stringify({ templates: selected.map((s) => s.id), params })
     );
@@ -69,7 +65,6 @@ const Selected = () => {
   }, [selected, loading]);
 
   const unselectTemplate = (temp) => {
-    // Prevent decode of old URL after clicking unselect
     ignoreDecode.current = true;
 
     const updated = selected.filter((s) => s.id !== temp.id);
