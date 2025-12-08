@@ -1,9 +1,9 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import useRouteLoader from "./hooks/useRouteLoader";
-import Header from "./components/Header";
+import Header from "./components/Header.jsx";
 import Navigation from "./components/Navigation";
-import Showcase from "./components/Showcase";
+import ShowCase from "./components/ShowCase.jsx";
 import Error from "./components/Error";
 import Success from "./components/Success";
 import CreateBrief from "./pages/CreateBrief";
@@ -25,13 +25,13 @@ const App = () => {
       <main className="main-content">
         <div className="container">
           <Routes>
-            <Route path="/" element={<Showcase />} />
+            <Route path="/" element={<ShowCase />} />
 
-            <Route path="/search/:query" element={<Showcase />} />
+            <Route path="/search/:query" element={<ShowCase />} />
 
-            <Route path="/filter/:filters" element={<Showcase />} />
+            <Route path="/filter/:filters" element={<ShowCase />} />
 
-            <Route path="/create-brief" element={<CreateBrief />} />
+            <Route path="/create-brief/:filters" element={<CreateBrief />} />
 
             <Route path="/error" element={<Error msg={globalError} />} />
 

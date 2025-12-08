@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { resetFilters } from "../features/filters/filterSlice";
 import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
+import { useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -10,7 +11,6 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const isLoginPage = pathname === "/create-brief";
-
   const handleLogoClick = (e) => {
     e.preventDefault();
 
@@ -40,7 +40,9 @@ const Header = () => {
                   icon={faRightToBracket}
                   text={"Campaign Brief"}
                   btnType={"secondary"}
-                  onClick={() => navigate("/create-brief")}
+                  onClick={() =>
+                    navigate(`/create-brief/${pathname.split("/")[2] || ""}`)
+                  }
                 />
               </div>
             )}

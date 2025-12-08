@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setError, setSuccess } from "../features/ui/uiSlice";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
+import { campaign_data, getCampaign } from "../features/filters/filterSlice";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const CreateBrief = () => {
   const initialState = {
@@ -24,48 +26,58 @@ const CreateBrief = () => {
     cta_copy: "",
   };
 
-  const [formData, setFormData] = useState(initialState);
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const decoded = JSON.parse(atob(pathname.split("/")[2] || ""));
+    dispatch(
+      campaign_data({ name: "campaign_id", value: decoded?.campaign_id })
+    );
+    console.log(decoded?.params?.agency);
+    if (decoded?.campaign_id) {
+      dispatch(getCampaign(decoded?.campaign_id)); // ⬅ auto call on reload
+    }
+  }, []);
 
+  const brief = useSelector((state) => state.filters.campaign_brief);
   const handleChange = (name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    dispatch(campaign_data({ name, value }));
   };
 
   const triggerEmail = async (data) => {
     try {
+      let decoded = JSON.parse(atob(pathname.split("/")[2] || ""));
+      let agency = decoded?.params?.agency;
+      let client = decoded?.params?.client;
       const res = await fetch(
-        `https://selfserve.hockeycurve.com/public/hcgallery/mai`,
+        `https://selfserve.hockeycurve.com/public/hcgallery/mail`,
         {
           method: "POST",
           credentials: "include",
-          body: JSON.stringify(data),
+          body: JSON.stringify({ ...data, agency, client }),
         }
       );
       if (!res.ok) throw new Error("Network response was not ok");
 
       const json = await res.json();
       console.log(json);
-      return true;
+      // return true;
     } catch (e) {
       dispatch(setError(e));
-      return false;
+      // return false;
     }
   };
 
   const submitForm = (e) => {
     e.preventDefault();
-    triggerEmail(formData);
-    setFormData(initialState);
-    if (triggerEmail) {
-      dispatch(
-        setSuccess(
-          "Brief created successfully! Our team will get back to you at the earliest."
-        )
-      );
-    }
+    triggerEmail(brief);
+    // if (triggerEmail) {
+    //   dispatch(
+    //     setSuccess(
+    //       "Brief created successfully! Our team will get back to you at the earliest."
+    //     )
+    //   );
+    // }
   };
 
   return (
@@ -84,7 +96,7 @@ const CreateBrief = () => {
           inputFor="campaign_name"
           type="text"
           placeholder={"Campaign Name"}
-          value={formData.campaign_name}
+          value={brief?.campaign_name || ""}
           required
           onInput={(val) => handleChange("campaign_name", val)}
         />
@@ -95,7 +107,7 @@ const CreateBrief = () => {
           type="select"
           options={["Live", "Pitch", "Demo"]}
           placeholder={"Campaign Type"}
-          value={formData.campaign_type}
+          value={brief?.campaign_type || ""}
           required
           onInput={(val) => handleChange("campaign_type", val)}
         />
@@ -105,7 +117,7 @@ const CreateBrief = () => {
             text="Start Date"
             inputFor="start_date"
             type="date"
-            value={formData.start_date}
+            value={brief?.start_date || ""}
             required
             onInput={(val) => handleChange("start_date", val)}
           />
@@ -114,7 +126,7 @@ const CreateBrief = () => {
             text="End Date"
             inputFor="end_date"
             type="date"
-            value={formData.end_date}
+            value={brief?.end_date || ""}
             required
             onInput={(val) => handleChange("end_date", val)}
           />
@@ -125,7 +137,7 @@ const CreateBrief = () => {
             text="Overall Impressions"
             inputFor="overall_impression_volume"
             type="number"
-            value={formData.overall_impression_volume.toLocaleString("en-IN")}
+            value={brief?.overall_impression_volume || 0}
             placeholder={"1,000,000"}
             required
             onInput={(val) => handleChange("overall_impression_volume", val)}
@@ -135,7 +147,7 @@ const CreateBrief = () => {
             text="Benchmark CTR (%)"
             inputFor="benchmark_ctr"
             type="number"
-            value={formData.benchmark_ctr}
+            value={brief?.benchmark_ctr || 0}
             placeholder={"1.0"}
             required
             onInput={(val) => handleChange("benchmark_ctr", val)}
@@ -158,7 +170,7 @@ const CreateBrief = () => {
               "Remarketing",
               "TOFU",
             ]}
-            value={formData.objective}
+            value={brief?.objective || ""}
             required
             onInput={(val) => handleChange("objective", val)}
           />
@@ -168,7 +180,7 @@ const CreateBrief = () => {
             inputFor="ad_type"
             type="select"
             options={["Display", "Video", "Both"]}
-            value={formData.ad_type}
+            value={brief?.ad_type || ""}
             required
             onInput={(val) => handleChange("ad_type", val)}
           />
@@ -179,7 +191,7 @@ const CreateBrief = () => {
             text="Targeting"
             inputFor="targeting"
             type="text"
-            value={formData.targeting}
+            value={brief?.targeting || ""}
             placeholder={"Targeting"}
             required
             onInput={(val) => handleChange("targeting", val)}
@@ -189,7 +201,7 @@ const CreateBrief = () => {
             text="Geo"
             inputFor="geo"
             type="text"
-            value={formData.geo}
+            value={brief?.geo || ""}
             placeholder={"eg., US,IN,UK"}
             required
             onInput={(val) => handleChange("geo", val)}
@@ -200,27 +212,27 @@ const CreateBrief = () => {
             inputFor="dsp"
             type="select"
             options={["DV360", "DCM", "DFP", "VAST", "Other"]}
-            value={formData.dsp}
+            value={brief?.dsp || ""}
             required
             onInput={(val) => handleChange("dsp", val)}
           />
         </div>
 
-        <FormInput
+        {/* <FormInput
           text="Languages"
           inputFor="languages"
           type="text"
-          value={formData.languages}
+          value={brief?.languages || ""}
           placeholder={"eg., Hindi,English,Marathi"}
           required
           onInput={(val) => handleChange("languages", val)}
-        />
+        /> */}
 
         <FormInput
           text="Trackers"
           inputFor="trackers"
           type="text"
-          value={formData.trackers}
+          value={brief?.trackers || ""}
           placeholder={"Trackers Sheet Link"}
           required
           onInput={(val) => handleChange("trackers", val)}
@@ -230,27 +242,37 @@ const CreateBrief = () => {
           text="Landing Page"
           inputFor="landing_page"
           type="text"
-          value={formData.landing_page}
+          value={brief?.landing_page || ""}
           placeholder={"Landing Page URL"}
           required
           onInput={(val) => handleChange("landing_page", val)}
         />
 
-        <FormInput
+        {/* <FormInput
           text="CTA Copy"
           inputFor="cta_copy"
           type="text"
-          value={formData.cta_copy}
+          value={brief?.cta_copy || ""}
           placeholder={"eg., Shop Now, Learn More"}
           required
           onInput={(val) => handleChange("cta_copy", val)}
+        /> */}
+
+        <FormInput
+          text="Sales Notes"
+          inputFor="sales_notes"
+          type="textarea"
+          value={brief?.sales_notes || ""}
+          placeholder="Notes"
+          required
+          onInput={(val) => handleChange("sales_notes", val)}
         />
 
         <FormInput
           text="Email IDs"
           inputFor="emailid"
           type="text"
-          value={formData.emailid}
+          value={brief?.emailid || ""}
           placeholder={"Enter your email"}
           required
           onInput={(val) => handleChange("emailid", val)}
