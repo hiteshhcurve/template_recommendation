@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { setParams } from "../features/filters/filterSlice";
 import { setGlobalLoading, setError, setSuccess } from "../features/ui/uiSlice";
 import FormInput from "../components/FormInput";
 import Button from "../components/Button";
@@ -11,6 +10,7 @@ import Success from "../components/Success";
 
 const CreateBrief = () => {
   const initialState = {
+    campaign_id: "",
     campaign_name: "",
     campaign_type: "Live",
     agency: "",
@@ -45,15 +45,12 @@ const CreateBrief = () => {
   useEffect(() => {
     const decoded = JSON.parse(atob(pathname.split("/create-brief/")[1]));
     const selectedIDs = decoded.templates;
-    const urlParams = decoded.params;
 
-    if (params.agency === "" && params.client === "") {
-      dispatch(setParams(urlParams));
-    }
     setHasAgencyClient(params.agency && params.client);
 
     setFormData((prev) => ({
       ...prev,
+      campaign_id: decoded.campaign_id,
       templates: selectedIDs,
       agency: params.agency,
       client: params.client,
@@ -184,8 +181,8 @@ const CreateBrief = () => {
             inputFor="start_date"
             type="date"
             value={formData.start_date}
-            required
             onInput={(val) => handleChange("start_date", val)}
+            required
           />
 
           <FormInput
@@ -193,9 +190,9 @@ const CreateBrief = () => {
             inputFor="end_date"
             type="date"
             value={formData.end_date}
-            required
             onInput={(val) => handleChange("end_date", val)}
             options={{ startDateValue: formData.start_date }}
+            required
           />
         </div>
 
@@ -206,7 +203,6 @@ const CreateBrief = () => {
             type="number"
             value={formData.overall_impression_volume}
             placeholder={"1,000,000"}
-            required
             onInput={(val) => handleChange("overall_impression_volume", val)}
           />
 
@@ -216,7 +212,6 @@ const CreateBrief = () => {
             type="number"
             value={formData.benchmark_ctr}
             placeholder={"1.0"}
-            required
             onInput={(val) => handleChange("benchmark_ctr", val)}
           />
         </div>
@@ -238,7 +233,6 @@ const CreateBrief = () => {
               "TOFU",
             ]}
             value={formData.objective}
-            required
             onInput={(val) => handleChange("objective", val)}
           />
 
@@ -248,7 +242,6 @@ const CreateBrief = () => {
             type="select"
             options={["Display", "Video", "Both"]}
             value={formData.ad_type}
-            required
             onInput={(val) => handleChange("ad_type", val)}
           />
         </div>
@@ -278,7 +271,6 @@ const CreateBrief = () => {
             type="select"
             options={["DV360", "DCM", "DFP", "VAST", "Other"]}
             value={formData.dsp}
-            required
             onInput={(val) => handleChange("dsp", val)}
           />
         </div>
@@ -304,10 +296,9 @@ const CreateBrief = () => {
         <FormInput
           text="Landing Page"
           inputFor="landing_page"
-          type="text"
+          type="url"
           value={formData.landing_page}
           placeholder={"Landing Page URL"}
-          required
           onInput={(val) => handleChange("landing_page", val)}
         />
 
@@ -317,7 +308,6 @@ const CreateBrief = () => {
           type="text"
           value={formData.cta_copy}
           placeholder={"eg., Shop Now, Learn More"}
-          required
           onInput={(val) => handleChange("cta_copy", val)}
         />
 
@@ -327,7 +317,6 @@ const CreateBrief = () => {
           type="text"
           value={formData.emailid}
           placeholder={"Enter your email"}
-          required
           onInput={(val) => handleChange("emailid", val)}
         />
 

@@ -89,7 +89,7 @@ const FormInput = ({
         ></textarea>
       ) : type === "multiselect" ? (
         <MultiSelect
-          fetchOptions={fetchOptions} // your async fetch function
+          fetchOptions={fetchOptions}
           placeholder={placeholder}
           onSelectionChange={setSelectionChange}
         />

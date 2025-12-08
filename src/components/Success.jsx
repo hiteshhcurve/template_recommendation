@@ -11,13 +11,13 @@ const Success = () => {
   const dispatch = useDispatch();
 
   const { globalSuccess } = useSelector((state) => state.ui);
-  const params = useSelector((state) => state.filters.params);
+  const campaignID = useSelector((state) => state.filters.campaignID);
 
   const handleClick = (e) => {
     e.preventDefault();
 
     const query = {
-      params,
+      campaign_id: campaignID,
     };
 
     const encodedQuery = btoa(JSON.stringify(query));

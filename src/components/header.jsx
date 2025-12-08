@@ -13,7 +13,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
   const { selected } = useSelector((state) => state.templates);
-  const { params } = useSelector((state) => state.filters);
+  const { campaignID } = useSelector((state) => state.filters);
 
   const isLoginPage = pathname.includes("/selected");
 
@@ -21,7 +21,7 @@ const Header = () => {
     e.preventDefault();
 
     const query = {
-      params,
+      campaign_id: campaignID,
     };
 
     const encodedQuery = btoa(JSON.stringify(query));
@@ -34,20 +34,22 @@ const Header = () => {
   const handleNavigate = () => {
     if (pathname.includes("/selected/")) {
       const query = {
-        params,
-        templates: selected?.map((s) => s.preset_id),
+        campaign_id: campaignID,
+        templates: selected?.map((s) => s.id),
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
       navigate(`/create-brief/${encodedQuery}`);
     } else {
       const query = {
-        params,
+        campaign_id: campaignID,
         templates: selected?.map((s) => s.id),
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
-      navigate(`/selected/${encodedQuery}`);
+      const url = `/selected/${encodedQuery}`;
+      console.log(url);
+      navigate(url);
     }
   };
 

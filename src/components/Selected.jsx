@@ -5,7 +5,7 @@ import {
   setSelectedTemplates,
   fetchSelected,
 } from "../features/templates/templateSlice";
-import { setParams } from "../features/filters/filterSlice";
+import { setCampaignID } from "../features/filters/filterSlice";
 import Card from "./Card";
 import Loader from "./Loader";
 
@@ -17,10 +17,12 @@ const Selected = () => {
   const ignoreDecode = useRef(false);
 
   const { selected, loading } = useSelector((state) => state.templates);
-  const { params } = useSelector((state) => state.filters);
+  const { campaignID } = useSelector((state) => state.filters);
 
   const decodedData = useMemo(() => {
     if (ignoreDecode.current) return null;
+
+    dispatch(setCampaignID(campaignID));
 
     try {
       const encoded = pathname.split("/selected/")[1] || "";
@@ -33,36 +35,17 @@ const Selected = () => {
   }, [pathname]);
 
   const selectedIDs = decodedData?.templates || [];
-  const decodedParams = decodedData?.params || {};
+  const campaign_id = decodedData?.campaign_id || NaN;
 
   useEffect(() => {
     if (!decodedData) return;
 
-    dispatch(setParams(decodedParams));
+    dispatch(setCampaignID(campaign_id));
 
     if (selected.length === 0 && selectedIDs.length > 0) {
       dispatch(fetchSelected(selectedIDs));
     }
   }, [decodedData]);
-
-  useEffect(() => {
-    if (loading) return;
-
-    if (selected.length === 0) {
-      ignoreDecode.current = true;
-
-      const encoded = btoa(JSON.stringify({ params }));
-      navigate(`/${encoded}`);
-      return;
-    }
-
-    const encoded = btoa(
-      JSON.stringify({ templates: selected.map((s) => s.id), params })
-    );
-
-    ignoreDecode.current = true;
-    navigate(`/selected/${encoded}`);
-  }, [selected, loading]);
 
   const unselectTemplate = (temp) => {
     ignoreDecode.current = true;

@@ -24,7 +24,7 @@ const Navigation = () => {
     (state) => state.filters.filters
   );
 
-  const { params } = useSelector((state) => state.filters);
+  const { campaignID } = useSelector((state) => state.filters);
 
   const {
     clients: selectedClients,
@@ -45,7 +45,7 @@ const Navigation = () => {
         industryTags1: selectedIndustryTags1,
         industryTags2: selectedIndustryTags2,
         industryTags3: selectedIndustryTags3,
-        params,
+        campaign_id: campaignID,
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
@@ -54,7 +54,7 @@ const Navigation = () => {
       navigate(`/filter/${encodedQuery}`);
     } else {
       const query = {
-        params,
+        campaign_id: campaignID,
       };
 
       const encodedQuery = btoa(JSON.stringify(query));

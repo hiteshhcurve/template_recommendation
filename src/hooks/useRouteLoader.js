@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   fetchTemplates,
   fetchClientInfo,
@@ -16,12 +16,15 @@ import {
   setSearchQuery,
   enableFilters,
   resetFilters,
-  setParams,
+  fetchParams,
+  setCampaignID,
 } from "../features/filters/filterSlice";
 
 export default function useRouteLoader() {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
+
+  const { params } = useSelector((state) => state.filters);
 
   useEffect(() => {
     if (pathname.startsWith("/filter/")) {
@@ -35,7 +38,11 @@ export default function useRouteLoader() {
         return;
       }
 
-      const params = decoded.params;
+      const campaignID = decoded.campaign_id;
+
+      if (params.client === "" || params.agency === "") {
+        dispatch(fetchParams(campaignID));
+      }
 
       dispatch(enableFilters(true));
       dispatch(fetchFilters());
@@ -43,7 +50,7 @@ export default function useRouteLoader() {
       dispatch(setSelectedIndustryTags1(decoded.industryTags1 || []));
       dispatch(setSelectedIndustryTags2(decoded.industryTags2 || []));
       dispatch(setSelectedIndustryTags3(decoded.industryTags3 || []));
-      dispatch(setParams(params));
+      dispatch(setCampaignID(campaignID));
       dispatch(applyFilters(decoded));
       return;
     }
@@ -64,10 +71,28 @@ export default function useRouteLoader() {
       return;
     }
 
-    if (
-      pathname.startsWith("/selected/") ||
-      pathname.startsWith("/create-brief/")
-    ) {
+    if (pathname.startsWith("/selected/")) {
+      return;
+    }
+
+    if (pathname.startsWith("/create-brief/")) {
+      const encoded = pathname.split("/")[2];
+      let decoded = {};
+
+      try {
+        decoded = JSON.parse(atob(encoded));
+      } catch (e) {
+        console.error("Invalid filter encoding:", e);
+        return;
+      }
+
+      const campaignID = decoded.campaign_id;
+
+      if (params.client === "" || params.agency === "") {
+        dispatch(fetchParams(campaignID));
+        dispatch(setCampaignID(campaignID));
+      }
+
       return;
     }
 
@@ -83,8 +108,12 @@ export default function useRouteLoader() {
         return;
       }
 
-      const params = decoded.params;
-      dispatch(setParams(params));
+      const campaignID = decoded.campaign_id;
+      dispatch(setCampaignID(campaignID));
+
+      if (params.client === "" || params.agency === "") {
+        dispatch(fetchParams(campaignID));
+      }
     }
 
     dispatch(fetchTemplates());

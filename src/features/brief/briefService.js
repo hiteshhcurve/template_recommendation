@@ -24,9 +24,9 @@ const fetchParams = async (id) => {
   return data.data;
 };
 
-const filterService = {
+const briefService = {
   fetchFilters,
   fetchParams,
 };
 
-export default filterService;
+export default briefService;

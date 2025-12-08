@@ -13,6 +13,18 @@ export const fetchFilters = createAsyncThunk(
   }
 );
 
+// Fetch params by campaign ID
+export const fetchParams = createAsyncThunk(
+  "filters/params",
+  async (id, thunkAPI) => {
+    try {
+      return await filterService.fetchParams(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   filters: {
     clients: [],
@@ -30,6 +42,7 @@ const initialState = {
     agency: "",
     client: "",
   },
+  campaignID: null,
   searchQuery: null,
   enabled: false,
   loading: false,
@@ -55,6 +68,9 @@ const filterSlice = createSlice({
     setParams: (state, action) => {
       state.params.agency = action.payload.agency;
       state.params.client = action.payload.client;
+    },
+    setCampaignID: (state, action) => {
+      state.campaignID = action.payload;
     },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
@@ -83,6 +99,20 @@ const filterSlice = createSlice({
       .addCase(fetchFilters.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      // FETCH PARAMS BY CAMPAIGN ID
+      .addCase(fetchParams.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchParams.fulfilled, (state, action) => {
+        state.loading = false;
+        state.params.agency = action.payload.agency_name;
+        state.params.client = action.payload.client_name;
+      })
+      .addCase(fetchParams.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
@@ -93,6 +123,7 @@ export const {
   setSelectedIndustryTags2,
   setSelectedIndustryTags3,
   setParams,
+  setCampaignID,
   setSearchQuery,
   enableFilters,
   resetFilters,
