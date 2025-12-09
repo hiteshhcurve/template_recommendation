@@ -2,11 +2,11 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import briefService from "./briefService";
 
 // Fetch all filters
-export const fetchFilters = createAsyncThunk(
+export const fetchBrief = createAsyncThunk(
   "brief/fetchAll",
-  async (_, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
-      return await briefService.fetchFilters();
+      return await briefService.fetchBrief(id);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -14,63 +14,70 @@ export const fetchFilters = createAsyncThunk(
 );
 
 const initialState = {
-  campaign_id: "",
-  campaign_name: "",
-  campaign_type: "Live",
-  agency: "",
-  client: "",
-  start_date: "",
-  end_date: "",
-  overall_impression_volume: "",
-  benchmark_ctr: "",
-  emailid: "",
-  objective: "Awareness",
-  ad_type: "Display",
-  targeting: "",
-  geo: "",
-  languages: "",
-  dsp: "DV360",
-  trackers: "",
-  landing_page: "",
-  cta_copy: "",
-  templates: [],
-  notes: "",
+  loading: false,
+  error: null,
+  brief: {
+    campaign_id: "",
+    campaign_name: "",
+    campaign_type: "Live",
+    agency: "",
+    client: "",
+    start_date: "",
+    end_date: "",
+    overall_impression_volume: "",
+    benchmark_ctr: "",
+    emailid: "",
+    objective: "Awareness",
+    ad_type: "Display",
+    targeting: "",
+    geo: "",
+    languages: "",
+    dsp: "DV360",
+    trackers: "",
+    landing_page: "",
+    cta_copy: "",
+    templates: [],
+    notes: "",
+  },
 };
 
 const briefSlice = createSlice({
   name: "brief",
   initialState,
-  reducers: {},
+  reducers: {
+    reset: () => initialState,
+  },
 
   extraReducers: (builder) => {
     builder
       // FETCH ALL FILTERS
-      .addCase(fetchFilters.pending, (state) => {
+      .addCase(fetchBrief.pending, (state) => {
         state.loading = true;
       })
-      .addCase(fetchFilters.fulfilled, (state, action) => {
+      .addCase(fetchBrief.fulfilled, (state, action) => {
+        state.brief.campaign_id = action.payload.id;
+        state.brief.campaign_name = action.payload.campaign_name;
+        state.brief.start_date = action.payload.sdate;
+        state.brief.end_date = action.payload.edate;
+        state.brief.overall_impression_volume = action.payload.total_imp;
+        state.brief.benchmark_ctr = action.payload.bench_ctr;
+        state.brief.emailid = action.payload.email;
+        state.brief.objective = action.payload.campaign_objective;
+        state.brief.targeting = action.payload.targetting_criteria;
+        state.brief.geo = action.payload.geo;
+        state.brief.dsp = action.payload.adtag_type;
+        state.brief.trackers = action.payload.tracker;
+        state.brief.landing_page = action.payload.lp;
+        state.brief.templates = action.payload.hc_template || [];
+        state.brief.notes = action.payload.sales_notes;
         state.loading = false;
-        state.filters.clients = action.payload.clients;
-        state.filters.industry_tag1 = action.payload.industry_tag1;
-        state.filters.industry_tag2 = action.payload.industry_tag2;
-        state.filters.industry_tag3 = action.payload.industry_tag3;
       })
-      .addCase(fetchFilters.rejected, (state, action) => {
-        state.loading = false;
+      .addCase(fetchBrief.rejected, (state, action) => {
         state.error = action.payload;
+        state.loading = false;
       });
   },
 });
 
-export const {
-  setSelectedClients,
-  setSelectedIndustryTags1,
-  setSelectedIndustryTags2,
-  setSelectedIndustryTags3,
-  setParams,
-  setCampaignID,
-  setSearchQuery,
-  enableFilters,
-  resetFilters,
-} = briefSlice.actions;
+export const { reset } = briefSlice.actions;
 export default briefSlice.reducer;

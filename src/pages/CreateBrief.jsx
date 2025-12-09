@@ -9,29 +9,7 @@ import Error from "../components/Error";
 import Success from "../components/Success";
 
 const CreateBrief = () => {
-  const initialState = {
-    campaign_id: "",
-    campaign_name: "",
-    campaign_type: "Live",
-    agency: "",
-    client: "",
-    start_date: "",
-    end_date: "",
-    overall_impression_volume: "",
-    benchmark_ctr: "",
-    emailid: "",
-    objective: "Awareness",
-    ad_type: "Display",
-    targeting: "",
-    geo: "",
-    languages: "",
-    dsp: "DV360",
-    trackers: "",
-    landing_page: "",
-    cta_copy: "",
-    templates: [],
-    notes: "",
-  };
+  let initialState = useSelector((state) => state.brief.brief);
 
   const [formData, setFormData] = useState(initialState);
   const [hasAgencyClient, setHasAgencyClient] = useState(false);
@@ -41,6 +19,10 @@ const CreateBrief = () => {
   const { params } = useSelector((state) => state.filters);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+
+  useEffect(() => {
+    setFormData(initialState);
+  }, [initialState]);
 
   useEffect(() => {
     const decoded = JSON.parse(atob(pathname.split("/create-brief/")[1]));

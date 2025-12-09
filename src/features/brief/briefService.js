@@ -1,18 +1,7 @@
 const apiURL = "https://selfserve.hockeycurve.com/public/hcgallery";
 
-const fetchFilters = async () => {
-  const res = await fetch(`${apiURL}/filters`, {
-    credentials: "include",
-  });
-
-  if (!res.ok) throw new Error("Network error");
-
-  const data = await res.json();
-  return data.data;
-};
-
-const fetchParams = async (id) => {
-  const res = await fetch(`${apiURL}/params`, {
+const fetchBrief = async (id) => {
+  const res = await fetch(`${apiURL}/get_campaign_data`, {
     method: "POST",
     credentials: "include",
     body: JSON.stringify({ id: id }),
@@ -25,8 +14,7 @@ const fetchParams = async (id) => {
 };
 
 const briefService = {
-  fetchFilters,
-  fetchParams,
+  fetchBrief,
 };
 
 export default briefService;

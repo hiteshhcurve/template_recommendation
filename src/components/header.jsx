@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { resetFilters } from "../features/filters/filterSlice";
+import { reset as resetBrief } from "../features/brief/briefSlice";
 import { setSelectedTemplates } from "../features/templates/templateSlice";
 import {
   faRightToBracket,
@@ -28,6 +29,7 @@ const Header = () => {
 
     dispatch(resetFilters());
     dispatch(setSelectedTemplates([]));
+    dispatch(resetBrief());
     navigate(`/${encodedQuery}`);
   };
 
