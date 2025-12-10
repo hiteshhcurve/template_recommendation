@@ -39,6 +39,13 @@ const CreateBrief = () => {
     }));
   }, [pathname, dispatch, params]);
 
+  const formatNumber = (num) => {
+    if (!num) return "";
+    return Number(num).toLocaleString("en-US");
+  };
+
+  const unformat = (str) => str.replace(/,/g, "");
+
   const handleChange = (name, value) => {
     setFormData((prev) => ({
       ...prev,
@@ -106,210 +113,226 @@ const CreateBrief = () => {
       <div className="login-header">
         <h3 className="form-title">Create a New Brief</h3>
         <p className="form-description">
-          Tell us about your project needs to get personalized template
-          recommendations
+          Provide the essential details to help us deliver the best campaign
+          performance
         </p>
       </div>
 
       <form id="login-form" onSubmit={submitForm}>
-        <FormInput
-          text="Campaign Name"
-          inputFor="campaign_name"
-          type="text"
-          placeholder={"Campaign Name"}
-          value={formData.campaign_name}
-          required
-          onInput={(val) => handleChange("campaign_name", val)}
-        />
+        <div className="wrap-container">
+          <h4 className="form-section-heading">Basic Details</h4>
+          <FormInput
+            text="Campaign Name"
+            inputFor="campaign_name"
+            type="text"
+            placeholder={"Campaign Name"}
+            value={formData.campaign_name}
+            required
+            onInput={(val) => handleChange("campaign_name", val)}
+          />
 
-        <FormInput
-          text="Campaign Type"
-          inputFor="campaign_type"
-          type="select"
-          options={["Live", "Pitch", "Demo"]}
-          placeholder={"Campaign Type"}
-          value={formData.campaign_type}
-          required
-          onInput={(val) => handleChange("campaign_type", val)}
-        />
-
-        {!hasAgencyClient && (
           <div className="flex">
             <FormInput
-              text="Agency Name"
-              inputFor="agency"
-              type="text"
-              placeholder={"Agency Name"}
-              value={formData.agency}
+              text="Campaign Type"
+              inputFor="campaign_type"
+              type="select"
+              options={["Live", "Pitch", "Demo"]}
+              placeholder={"Campaign Type"}
+              value={formData.campaign_type}
               required
-              onInput={(val) => handleChange("agency", val)}
+              onInput={(val) => handleChange("campaign_type", val)}
             />
 
             <FormInput
-              text="Client Name"
-              inputFor="client"
-              type="text"
-              placeholder={"Client Name"}
-              value={formData.client}
-              required
-              onInput={(val) => handleChange("client", val)}
+              text="Campaign Objective"
+              inputFor="objective"
+              type="select"
+              options={[
+                "Awareness",
+                "ROAS",
+                "Lead Generation",
+                "Store Visits",
+                "Increase Website Traffic",
+                "Consideration",
+                "Branding",
+                "Remarketing",
+                "TOFU",
+              ]}
+              value={formData.objective}
+              onInput={(val) => handleChange("objective", val)}
             />
           </div>
-        )}
 
-        <div className="flex">
-          <FormInput
-            text="Start Date"
-            inputFor="start_date"
-            type="date"
-            value={formData.start_date}
-            onInput={(val) => handleChange("start_date", val)}
-            required
-          />
+          {!hasAgencyClient && (
+            <div className="flex">
+              <FormInput
+                text="Agency Name"
+                inputFor="agency"
+                type="text"
+                placeholder={"Agency Name"}
+                value={formData.agency}
+                required
+                onInput={(val) => handleChange("agency", val)}
+              />
 
-          <FormInput
-            text="End Date"
-            inputFor="end_date"
-            type="date"
-            value={formData.end_date}
-            onInput={(val) => handleChange("end_date", val)}
-            options={{ startDateValue: formData.start_date }}
-            required
-          />
-        </div>
+              <FormInput
+                text="Client Name"
+                inputFor="client"
+                type="text"
+                placeholder={"Client Name"}
+                value={formData.client}
+                required
+                onInput={(val) => handleChange("client", val)}
+              />
+            </div>
+          )}
 
-        <div className="flex">
-          <FormInput
-            text="Overall Impressions"
-            inputFor="overall_impression_volume"
-            type="number"
-            value={formData.overall_impression_volume}
-            placeholder={"1,000,000"}
-            onInput={(val) => handleChange("overall_impression_volume", val)}
-          />
+          <div className="flex">
+            <FormInput
+              text="Start Date"
+              inputFor="start_date"
+              type="date"
+              value={formData.start_date}
+              onInput={(val) => handleChange("start_date", val)}
+              required
+            />
 
-          <FormInput
-            text="Benchmark CTR (%)"
-            inputFor="benchmark_ctr"
-            type="number"
-            value={formData.benchmark_ctr}
-            placeholder={"1.0"}
-            onInput={(val) => handleChange("benchmark_ctr", val)}
-          />
-        </div>
-
-        <div className="flex">
-          <FormInput
-            text="Campaign Objective"
-            inputFor="objective"
-            type="select"
-            options={[
-              "Awareness",
-              "ROAS",
-              "Lead Generation",
-              "Store Visits",
-              "Increase Website Traffic",
-              "Consideration",
-              "Branding",
-              "Remarketing",
-              "TOFU",
-            ]}
-            value={formData.objective}
-            onInput={(val) => handleChange("objective", val)}
-          />
+            <FormInput
+              text="End Date"
+              inputFor="end_date"
+              type="date"
+              value={formData.end_date}
+              onInput={(val) => handleChange("end_date", val)}
+              options={{ startDateValue: formData.start_date }}
+              required
+            />
+          </div>
 
           <FormInput
-            text="Ad Type"
-            inputFor="ad_type"
-            type="select"
-            options={["Display", "Video", "Both"]}
-            value={formData.ad_type}
-            onInput={(val) => handleChange("ad_type", val)}
-          />
-        </div>
-
-        <div className="grid-3">
-          <FormInput
-            text="Targeting"
-            inputFor="targeting"
+            text="Email IDs"
+            inputFor="emailid"
             type="text"
-            value={formData.targeting}
-            placeholder={"Targeting"}
-            onInput={(val) => handleChange("targeting", val)}
-          />
-
-          <FormInput
-            text="Geo"
-            inputFor="geo"
-            type="text"
-            value={formData.geo}
-            placeholder={"eg., US,IN,UK"}
-            onInput={(val) => handleChange("geo", val)}
-          />
-
-          <FormInput
-            text="DSP"
-            inputFor="dsp"
-            type="select"
-            options={["DV360", "DCM", "DFP", "VAST", "Other"]}
-            value={formData.dsp}
-            onInput={(val) => handleChange("dsp", val)}
+            value={formData.emailid}
+            placeholder={"Enter your email"}
+            onInput={(val) => handleChange("emailid", val)}
           />
         </div>
 
-        <FormInput
-          text="Languages"
-          inputFor="languages"
-          type="text"
-          value={formData.languages}
-          placeholder={"eg., Hindi,English,Marathi"}
-          onInput={(val) => handleChange("languages", val)}
-        />
+        <div className="wrap-container">
+          <h4 className="form-section-heading">Notice Board Details</h4>
 
-        <FormInput
-          text="Trackers"
-          inputFor="trackers"
-          type="text"
-          value={formData.trackers}
-          placeholder={"Trackers Sheet Link"}
-          onInput={(val) => handleChange("trackers", val)}
-        />
+          <div className="grid-3">
+            <FormInput
+              text="Overall Impressions"
+              inputFor="overall_impression_volume"
+              type="text"
+              value={formatNumber(formData.overall_impression_volume)}
+              placeholder={"1,000,000"}
+              onInput={(val) => {
+                const raw = unformat(val); // remove commas
+                handleChange("overall_impression_volume", raw);
+              }}
+            />
 
-        <FormInput
-          text="Landing Page"
-          inputFor="landing_page"
-          type="url"
-          value={formData.landing_page}
-          placeholder={"Landing Page URL"}
-          onInput={(val) => handleChange("landing_page", val)}
-        />
+            <FormInput
+              text="Benchmark CTR (%)"
+              inputFor="benchmark_ctr"
+              type="number"
+              value={formData.benchmark_ctr}
+              placeholder={"1.0"}
+              onInput={(val) => handleChange("benchmark_ctr", val)}
+            />
 
-        <FormInput
-          text="CTA Copy"
-          inputFor="cta_copy"
-          type="text"
-          value={formData.cta_copy}
-          placeholder={"eg., Shop Now, Learn More"}
-          onInput={(val) => handleChange("cta_copy", val)}
-        />
+            <FormInput
+              text="Ad Type"
+              inputFor="ad_type"
+              type="select"
+              options={["Display", "Video", "Both"]}
+              value={formData.ad_type}
+              onInput={(val) => handleChange("ad_type", val)}
+            />
+          </div>
+        </div>
 
-        <FormInput
-          text="Email IDs"
-          inputFor="emailid"
-          type="text"
-          value={formData.emailid}
-          placeholder={"Enter your email"}
-          onInput={(val) => handleChange("emailid", val)}
-        />
+        <div className="wrap-container">
+          <h4 className="form-section-heading">
+            Creative and Targeting Details
+          </h4>
 
-        <FormInput
-          text="Additional Notes"
-          inputFor="notes"
-          type="textarea"
-          value={formData.notes}
-          placeholder={"Additional information or requirements"}
-          onInput={(val) => handleChange("notes", val)}
-        />
+          <div className="grid-3">
+            <FormInput
+              text="Targeting"
+              inputFor="targeting"
+              type="text"
+              value={formData.targeting}
+              placeholder={"Targeting"}
+              onInput={(val) => handleChange("targeting", val)}
+            />
+
+            <FormInput
+              text="Geo"
+              inputFor="geo"
+              type="text"
+              value={formData.geo}
+              placeholder={"eg., US,IN,UK"}
+              onInput={(val) => handleChange("geo", val)}
+            />
+
+            <FormInput
+              text="DSP"
+              inputFor="dsp"
+              type="select"
+              options={["DV360", "DCM", "DFP", "VAST", "Other"]}
+              value={formData.dsp}
+              onInput={(val) => handleChange("dsp", val)}
+            />
+          </div>
+
+          <FormInput
+            text="Languages"
+            inputFor="languages"
+            type="text"
+            value={formData.languages}
+            placeholder={"eg., Hindi,English,Marathi"}
+            onInput={(val) => handleChange("languages", val)}
+          />
+
+          <FormInput
+            text="Trackers"
+            inputFor="trackers"
+            type="text"
+            value={formData.trackers}
+            placeholder={"Trackers Sheet Link"}
+            onInput={(val) => handleChange("trackers", val)}
+          />
+
+          <FormInput
+            text="Landing Page"
+            inputFor="landing_page"
+            type="url"
+            value={formData.landing_page}
+            placeholder={"Landing Page URL"}
+            onInput={(val) => handleChange("landing_page", val)}
+          />
+
+          <FormInput
+            text="CTA Copy"
+            inputFor="cta_copy"
+            type="text"
+            value={formData.cta_copy}
+            placeholder={"eg., Shop Now, Learn More"}
+            onInput={(val) => handleChange("cta_copy", val)}
+          />
+
+          <FormInput
+            text="Additional Notes"
+            inputFor="notes"
+            type="textarea"
+            value={formData.notes}
+            placeholder={"Additional information or requirements"}
+            onInput={(val) => handleChange("notes", val)}
+          />
+        </div>
 
         <Button text="Submit Brief" type="submit" btnType={"primary"} />
       </form>

@@ -116,7 +116,7 @@ export default function useRouteLoader() {
 
       const campaignID = decoded.campaign_id;
 
-      if (!params.client || !params.agency) {
+      if (campaignID && (!params.client || !params.agency)) {
         dispatch(fetchParams(campaignID));
       }
 
