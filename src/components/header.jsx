@@ -1,15 +1,10 @@
-import { useNavigate, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { resetFilters } from "../features/filters/filterSlice";
-import { faRightToBracket } from "@fortawesome/free-solid-svg-icons";
-import Button from "./Button";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const { preagency, preclient } = useSelector((state) => state.filters.params);
-  const isLoginPage = pathname === "/create-brief";
 
   const handleLogoClick = (e) => {
     e.preventDefault();
@@ -33,25 +28,6 @@ const Header = () => {
                 />
               </div>
             </div>
-
-            {!isLoginPage && preagency && preclient && (
-              <div className="header-right">
-                <Button
-                  icon={faRightToBracket}
-                  text={"Campaign Brief"}
-                  btnType={"secondary"}
-                  onClick={() => {
-                    let encode = btoa(
-                      JSON.stringify({
-                        preagency: preagency,
-                        preclient: preclient,
-                      })
-                    );
-                    navigate(`/create-brief/${encode}`);
-                  }}
-                />
-              </div>
-            )}
           </div>
         </div>
       </header>
