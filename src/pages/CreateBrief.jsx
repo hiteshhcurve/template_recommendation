@@ -229,7 +229,7 @@ const CreateBrief = () => {
               value={formatNumber(formData.overall_impression_volume)}
               placeholder={"1,000,000"}
               onInput={(val) => {
-                const raw = unformat(val); // remove commas
+                const raw = unformat(val);
                 handleChange("overall_impression_volume", raw);
               }}
             />
