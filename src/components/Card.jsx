@@ -1,38 +1,24 @@
 import { Link } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
+import { faEye } from "@fortawesome/free-solid-svg-icons";
 import Button from "./Button";
 
-const Card = ({ template, selected, selectTemplate }) => {
-  const { title, desc, thumbnail, meta_tags, videos_images, adpreviews } =
-    template;
+const Card = ({ template }) => {
+  const { id, title, desc, thumbnail, meta_tags, videos_images } = template;
 
   const imageLink =
     videos_images !== undefined
       ? JSON.parse(videos_images.replace(/'/g, '"'))[1]
       : thumbnail;
 
-  const encodedPreview = btoa(adpreviews);
-
-  const handleSelect = () => {
-    selectTemplate(template);
-  };
-
   return (
     <div className="template-card">
-      <div className="card-image-container" onClick={handleSelect}>
+      <div className="card-image-container">
         <img
           src={imageLink || null}
           alt={title}
           className="card-image"
           loading="lazy"
         />
-
-        {selected && (
-          <div className="selected-overlay">
-            <FontAwesomeIcon icon={faCircleCheck} className="selected-icon" />
-          </div>
-        )}
       </div>
 
       <div className="card-header">
@@ -55,31 +41,15 @@ const Card = ({ template, selected, selectTemplate }) => {
           ""
         )}
 
-        <div className="grid-2">
-          <Link
-            to={`https://selfserve.hockeycurve.com/public/adtag/blog2.php?d=${encodedPreview}`}
-            target="_blank"
-            style={{ display: "block" }}
-            className="flex-1"
-          >
-            <Button
-              text="View"
-              icon={faEye}
-              type={"button"}
-              width={"full"}
-              btnType={"primary"}
-            />
-          </Link>
-
+        <Link to={`/template/${id}`}>
           <Button
-            text={selected ? "Unselect" : "Select"}
-            icon={faCircleCheck}
+            text="View Details"
+            icon={faEye}
             type={"button"}
             width={"full"}
-            btnType={"secondary"}
-            onClick={handleSelect}
+            btnType={"primary"}
           />
-        </div>
+        </Link>
       </div>
     </div>
   );

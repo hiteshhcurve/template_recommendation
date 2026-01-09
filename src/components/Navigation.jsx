@@ -24,8 +24,6 @@ const Navigation = () => {
     (state) => state.filters.filters
   );
 
-  const { campaignID } = useSelector((state) => state.filters);
-
   const {
     clients: selectedClients,
     industry_tag1: selectedIndustryTags1,
@@ -45,7 +43,6 @@ const Navigation = () => {
         industryTags1: selectedIndustryTags1,
         industryTags2: selectedIndustryTags2,
         industryTags3: selectedIndustryTags3,
-        campaign_id: campaignID,
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
@@ -53,14 +50,8 @@ const Navigation = () => {
       dispatch(setPage(1));
       navigate(`/filter/${encodedQuery}`);
     } else {
-      const query = {
-        campaign_id: campaignID,
-      };
-
-      const encodedQuery = btoa(JSON.stringify(query));
-
       dispatch(resetFilters());
-      navigate(`/${encodedQuery}`);
+      navigate(`/`);
     }
 
     if (isFiltersModalOpen) setIsFiltersModalOpen(false);
@@ -86,7 +77,7 @@ const Navigation = () => {
             onSelectionChange={(item) => {
               dispatch(setSelectedIndustryTags1(item));
             }}
-            placeholder="Industry Tags 1..."
+            placeholder="Industry..."
             position="absolute"
           />
 
@@ -96,11 +87,11 @@ const Navigation = () => {
             onSelectionChange={(item) => {
               dispatch(setSelectedIndustryTags2(item));
             }}
-            placeholder="Industry Tags 2..."
+            placeholder="Category..."
             position="absolute"
           />
 
-          <MultiSelect
+          {/* <MultiSelect
             options={industry_tag3}
             selected={selectedIndustryTags3}
             onSelectionChange={(item) => {
@@ -108,7 +99,7 @@ const Navigation = () => {
             }}
             placeholder="Industry Tags 3..."
             position="absolute"
-          />
+          /> */}
 
           <Button
             text="Filter"

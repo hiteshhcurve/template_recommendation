@@ -61,9 +61,22 @@ export const fetchSelected = createAsyncThunk(
   }
 );
 
+// Get template details
+export const fetchDetails = createAsyncThunk(
+  "templates/fetchDetails",
+  async (id, thunkAPI) => {
+    try {
+      return await templateService.fetchDetails(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const initialState = {
   list: [],
   selected: [],
+  template: null,
   numberOfTemps: { total: 0, filtered: 0 },
   loading: false,
   error: null,
@@ -129,9 +142,22 @@ const templateSlice = createSlice({
       })
       .addCase(fetchSelected.fulfilled, (state, action) => {
         state.loading = false;
-        state.selected = action.payload;
+        state.list = action.payload;
       })
       .addCase(fetchSelected.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // GET TEMPLATE DETAILS
+      .addCase(fetchDetails.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.template = action.payload;
+      })
+      .addCase(fetchDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

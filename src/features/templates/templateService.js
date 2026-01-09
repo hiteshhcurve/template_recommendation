@@ -53,12 +53,33 @@ const fetchSelected = async (queryArr) => {
   return json.data;
 };
 
+const fetchDetails = async (id) => {
+  try {
+    const res = await fetch(`${apiURL}/details`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({ id }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Request failed with status: ${res.status}`);
+    }
+
+    const json = await res.json();
+    return json.data;
+  } catch (error) {
+    console.error("Error in fetchDetails:", error);
+    return null;
+  }
+};
+
 const templateService = {
   fetchTemplates,
   fetchClientInfo,
   searchTemplates,
   applyFilters,
   fetchSelected,
+  fetchDetails,
 };
 
 export default templateService;
