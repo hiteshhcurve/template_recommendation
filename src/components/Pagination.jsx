@@ -8,23 +8,33 @@ const Pagination = ({ page, pageSize, totalItems, setPage }) => {
   }, [page]);
 
   return (
-    <section className="pagination-container">
-      {page > 1 ? (
-        <button onClick={(e) => setPage(page - 1)} className="pagination-link">
-          Prev
-        </button>
-      ) : null}
+    <>
+      {totalPages > 1 && (
+        <section className="pagination-container">
+          {page > 1 ? (
+            <button
+              onClick={(e) => setPage(page - 1)}
+              className="pagination-link"
+            >
+              Prev
+            </button>
+          ) : null}
 
-      <span className="page-info">
-        {page} / {totalPages}
-      </span>
+          <span className="page-info">
+            {page} / {totalPages}
+          </span>
 
-      {page < totalPages ? (
-        <button onClick={(e) => setPage(page + 1)} className="pagination-link">
-          Next
-        </button>
-      ) : null}
-    </section>
+          {page < totalPages ? (
+            <button
+              onClick={(e) => setPage(page + 1)}
+              className="pagination-link"
+            >
+              Next
+            </button>
+          ) : null}
+        </section>
+      )}
+    </>
   );
 };
 

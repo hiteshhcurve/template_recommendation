@@ -11,7 +11,7 @@ import Button from "./Button";
 const FilterModal = ({ isOpen, onClose, onSubmit }) => {
   const dispatch = useDispatch();
   const { clients, industry_tag1, industry_tag2, industry_tag3 } = useSelector(
-    (state) => state.filters.filters
+    (state) => state.filters.filters,
   );
 
   const {
@@ -38,7 +38,7 @@ const FilterModal = ({ isOpen, onClose, onSubmit }) => {
             onSelectionChange={(item) => {
               dispatch(setSelectedClients(item));
             }}
-            placeholder="Select Clients..."
+            placeholder="Clients..."
           />
 
           <MultiSelect
@@ -47,7 +47,7 @@ const FilterModal = ({ isOpen, onClose, onSubmit }) => {
             onSelectionChange={(item) => {
               dispatch(setSelectedIndustryTags1(item));
             }}
-            placeholder="Industry Tags 1..."
+            placeholder="Industry..."
           />
 
           <MultiSelect
@@ -56,17 +56,17 @@ const FilterModal = ({ isOpen, onClose, onSubmit }) => {
             onSelectionChange={(item) => {
               dispatch(setSelectedIndustryTags2(item));
             }}
-            placeholder="Industry Tags 2..."
+            placeholder="Category..."
           />
 
-          <MultiSelect
+          {/* <MultiSelect
             options={industry_tag3}
             selected={selectedIndustryTags3}
             onSelectionChange={(item) => {
               dispatch(setSelectedIndustryTags3(item));
             }}
             placeholder="Industry Tags 3..."
-          />
+          /> */}
 
           <Button
             text="Apply Filters"

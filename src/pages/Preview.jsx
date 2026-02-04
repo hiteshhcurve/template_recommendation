@@ -9,8 +9,10 @@ import {
   faArrowTrendUp,
   faClockRotateLeft,
   faLayerGroup,
-  faListOl,
+  faPenRuler,
+  faSliders,
   faEye,
+  faSquareCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { fetchSelected } from "../features/templates/templateSlice";
 
@@ -66,7 +68,7 @@ const Preview = () => {
             <p className="info_desc">{template?.desc}</p>
 
             <div className="temp_info_grid">
-              <div className="performance info_card">
+              <div className="info_card">
                 <div className="icon flex-center">
                   <FontAwesomeIcon icon={faArrowTrendUp} />
                 </div>
@@ -76,7 +78,7 @@ const Preview = () => {
                 </div>
               </div>
 
-              <div className="performance info_card">
+              <div className="info_card">
                 <div className="icon flex-center">
                   <FontAwesomeIcon icon={faClockRotateLeft} />
                 </div>
@@ -86,7 +88,7 @@ const Preview = () => {
                 </div>
               </div>
 
-              <div className="performance info_card">
+              <div className="info_card">
                 <div className="icon flex-center">
                   <FontAwesomeIcon icon={faLayerGroup} />
                 </div>
@@ -95,16 +97,64 @@ const Preview = () => {
                   <h4 className="info_desc">{template?.platforms}</h4>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="performance info_card">
+        <div className="flex items-stretch w-full">
+          <div className="req_card">
+            <div className="info_content">
+              <div className="flex">
                 <div className="icon flex-center">
-                  <FontAwesomeIcon icon={faListOl} />
+                  <FontAwesomeIcon icon={faPenRuler} />
                 </div>
-                <div className="info_content">
-                  <p className="info_title">Requirements:</p>
-                  <h4 className="info_desc">{template?.requirements}</h4>
-                </div>
+                <p className="info_title">Creative Requirements:</p>
               </div>
+              <ul className="requirement_list">
+                {template?.requirements.creative_requirements.map((req) => (
+                  <li key={req} className="requirement_list_item">
+                    <FontAwesomeIcon
+                      icon={faSquareCheck}
+                      className="checkIcon"
+                    />
+                    {req.includes("docs.google.com") ? (
+                      <Link to={req} target="_blank">
+                        <h4>Feed Sheet</h4>
+                      </Link>
+                    ) : (
+                      <h4>{req}</h4>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="req_card">
+            <div className="info_content">
+              <div className="flex">
+                <div className="icon flex-center">
+                  <FontAwesomeIcon icon={faSliders} />
+                </div>
+                <p className="info_title">Ad Ops Requirements:</p>
+              </div>
+              <ul className="requirement_list">
+                {template?.requirements.ad_ops_requirements.map((req) => (
+                  <li key={req} className="requirement_list_item">
+                    <FontAwesomeIcon
+                      icon={faSquareCheck}
+                      className="checkIcon"
+                    />
+                    {req.includes("docs.google.com") ? (
+                      <Link to={req} target="_blank">
+                        <h4>Feed Sheet</h4>
+                      </Link>
+                    ) : (
+                      <h4>{req}</h4>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -122,5 +172,3 @@ const Preview = () => {
 };
 
 export default Preview;
-
-// https://selfserve.hockeycurve.com/public/adtag/blog2.php?d=${encodedPreview}
