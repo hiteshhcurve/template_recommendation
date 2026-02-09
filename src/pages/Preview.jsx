@@ -12,7 +12,7 @@ import {
   faPenRuler,
   faSliders,
   faEye,
-  faSquareCheck,
+  faCircleDot,
 } from "@fortawesome/free-solid-svg-icons";
 import { fetchSelected } from "../features/templates/templateSlice";
 
@@ -50,7 +50,7 @@ const Preview = () => {
             </div>
 
             <Link
-              to={`https://selfserve.hockeycurve.com/public/adtag/blog2.php?d=${encodedPreview}`}
+              to={`https://selfserve.hockeycurve.com/public/adtag/blog3.php?d=${encodedPreview}`}
               target="_blank"
             >
               <Button
@@ -113,10 +113,7 @@ const Preview = () => {
               <ul className="requirement_list">
                 {template?.requirements.creative_requirements.map((req) => (
                   <li key={req} className="requirement_list_item">
-                    <FontAwesomeIcon
-                      icon={faSquareCheck}
-                      className="checkIcon"
-                    />
+                    <FontAwesomeIcon icon={faCircleDot} className="checkIcon" />
                     {req.includes("docs.google.com") ? (
                       <Link to={req} target="_blank">
                         <h4>Feed Sheet</h4>
@@ -141,10 +138,7 @@ const Preview = () => {
               <ul className="requirement_list">
                 {template?.requirements.ad_ops_requirements.map((req) => (
                   <li key={req} className="requirement_list_item">
-                    <FontAwesomeIcon
-                      icon={faSquareCheck}
-                      className="checkIcon"
-                    />
+                    <FontAwesomeIcon icon={faCircleDot} className="checkIcon" />
                     {req.includes("docs.google.com") ? (
                       <Link to={req} target="_blank">
                         <h4>Feed Sheet</h4>
