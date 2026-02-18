@@ -12,7 +12,7 @@ import {
   fetchFilters,
   setSelectedIndustryTags1,
   setSelectedIndustryTags2,
-  setSelectedIndustryTags3,
+  setSelectedKeywords,
   setSearchQuery,
   enableFilters,
   resetFilters,
@@ -51,7 +51,7 @@ export default function useRouteLoader() {
       // Apply filters
       dispatch(setSelectedIndustryTags1(decoded.industryTags1 || []));
       dispatch(setSelectedIndustryTags2(decoded.industryTags2 || []));
-      dispatch(setSelectedIndustryTags3(decoded.industryTags3 || []));
+      dispatch(setSelectedKeywords(decoded.keywords || []));
       dispatch(applyFilters(decoded));
 
       return;

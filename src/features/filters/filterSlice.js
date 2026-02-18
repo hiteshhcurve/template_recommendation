@@ -10,7 +10,7 @@ export const fetchFilters = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const initialState = {
@@ -19,12 +19,14 @@ const initialState = {
     industry_tag1: [],
     industry_tag2: [],
     industry_tag3: [],
+    keywords: [],
   },
   selected: {
     clients: [],
     industry_tag1: [],
     industry_tag2: [],
     industry_tag3: [],
+    keywords: [],
   },
   searchQuery: null,
   enabled: false,
@@ -47,6 +49,9 @@ const filterSlice = createSlice({
     },
     setSelectedIndustryTags3: (state, action) => {
       state.selected.industry_tag3 = action.payload;
+    },
+    setSelectedKeywords: (state, action) => {
+      state.selected.keywords = action.payload;
     },
     setParams: (state, action) => {
       state.params.agency = action.payload.agency;
@@ -78,6 +83,7 @@ const filterSlice = createSlice({
         state.filters.industry_tag1 = action.payload.industry_tag1;
         state.filters.industry_tag2 = action.payload.industry_tag2;
         state.filters.industry_tag3 = action.payload.industry_tag3;
+        state.filters.keywords = action.payload.keywords;
       })
       .addCase(fetchFilters.rejected, (state, action) => {
         state.loading = false;
@@ -91,6 +97,7 @@ export const {
   setSelectedIndustryTags1,
   setSelectedIndustryTags2,
   setSelectedIndustryTags3,
+  setSelectedKeywords,
   setSearchQuery,
   enableFilters,
   resetFilters,

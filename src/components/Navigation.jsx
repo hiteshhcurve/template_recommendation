@@ -5,7 +5,7 @@ import {
   setSelectedClients,
   setSelectedIndustryTags1,
   setSelectedIndustryTags2,
-  setSelectedIndustryTags3,
+  setSelectedKeywords,
   resetFilters,
 } from "../features/filters/filterSlice";
 import { setPage } from "../features/ui/uiSlice";
@@ -20,15 +20,15 @@ const Navigation = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { clients, industry_tag1, industry_tag2, industry_tag3 } = useSelector(
-    (state) => state.filters.filters
+  const { clients, industry_tag1, industry_tag2, keywords } = useSelector(
+    (state) => state.filters.filters,
   );
 
   const {
     clients: selectedClients,
     industry_tag1: selectedIndustryTags1,
     industry_tag2: selectedIndustryTags2,
-    industry_tag3: selectedIndustryTags3,
+    keywords: selectedKeywords,
   } = useSelector((state) => state.filters.selected);
 
   const submitFilters = () => {
@@ -36,13 +36,13 @@ const Navigation = () => {
       selectedClients.length > 0 ||
       selectedIndustryTags1.length > 0 ||
       selectedIndustryTags2.length > 0 ||
-      selectedIndustryTags3.length > 0
+      selectedKeywords.length > 0
     ) {
       const query = {
         clients: selectedClients,
         industryTags1: selectedIndustryTags1,
         industryTags2: selectedIndustryTags2,
-        industryTags3: selectedIndustryTags3,
+        keywords: selectedKeywords,
       };
 
       const encodedQuery = btoa(JSON.stringify(query));
@@ -91,15 +91,15 @@ const Navigation = () => {
             position="absolute"
           />
 
-          {/* <MultiSelect
-            options={industry_tag3}
-            selected={selectedIndustryTags3}
+          <MultiSelect
+            options={keywords}
+            selected={selectedKeywords}
             onSelectionChange={(item) => {
-              dispatch(setSelectedIndustryTags3(item));
+              dispatch(setSelectedKeywords(item));
             }}
-            placeholder="Industry Tags 3..."
+            placeholder="DCOs..."
             position="absolute"
-          /> */}
+          />
 
           <Button
             text="Filter"
