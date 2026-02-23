@@ -10,8 +10,8 @@ import {
 } from "../features/templates/templateSlice";
 import {
   fetchFilters,
+  setSelectedClients,
   setSelectedIndustryTags1,
-  setSelectedIndustryTags2,
   setSelectedKeywords,
   setSearchQuery,
   enableFilters,
@@ -49,8 +49,8 @@ export default function useRouteLoader() {
       dispatch(fetchFilters());
 
       // Apply filters
+      dispatch(setSelectedClients(decoded.clients || []));
       dispatch(setSelectedIndustryTags1(decoded.industryTags1 || []));
-      dispatch(setSelectedIndustryTags2(decoded.industryTags2 || []));
       dispatch(setSelectedKeywords(decoded.keywords || []));
       dispatch(applyFilters(decoded));
 
