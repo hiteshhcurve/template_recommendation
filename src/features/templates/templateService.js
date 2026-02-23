@@ -6,7 +6,7 @@ const fetchTemplates = async () => {
     credentials: "include",
   });
   const data = await res.json();
-  return data.data;
+  return data;
 };
 
 const fetchClientInfo = async () => {
@@ -50,7 +50,7 @@ const fetchSelected = async (queryArr) => {
   });
   const json = await res.json();
 
-  return json.data;
+  return json;
 };
 
 const fetchDetails = async (id) => {

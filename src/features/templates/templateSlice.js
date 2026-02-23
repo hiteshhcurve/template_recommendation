@@ -99,11 +99,13 @@ const templateSlice = createSlice({
       })
       .addCase(fetchTemplates.fulfilled, (state, action) => {
         state.loading = false;
-        state.list = action.payload;
+        state.list = action.payload.data;
+        state.numberOfTemps.total = action.payload.total_temps;
+        state.numberOfTemps.filtered = action.payload.filtered_temps;
       })
       .addCase(fetchTemplates.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
+        state.error = action.payload.msg;
       })
 
       // SEARCH
@@ -111,12 +113,12 @@ const templateSlice = createSlice({
         state.loading = true;
       })
       .addCase(searchTemplates.fulfilled, (state, action) => {
-        state.loading = false;
         state.list = action.payload;
+        state.loading = false;
       })
       .addCase(searchTemplates.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.payload;
+        state.loading = false;
       })
 
       // APPLY FILTERS
@@ -124,16 +126,16 @@ const templateSlice = createSlice({
         state.loading = true;
       })
       .addCase(applyFilters.fulfilled, (state, action) => {
-        state.loading = false;
         state.list = action.payload.data;
         state.numberOfTemps = {
           total: action.payload.total,
           filtered: action.payload.filtered,
         };
+        state.loading = false;
       })
       .addCase(applyFilters.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.payload;
+        state.loading = false;
       })
 
       // FETCH SELECTED TEMPLATES
@@ -141,8 +143,10 @@ const templateSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchSelected.fulfilled, (state, action) => {
+        state.list = action.payload.data;
+        state.numberOfTemps.total = action.payload.total_temps;
+        state.numberOfTemps.filtered = 0;
         state.loading = false;
-        state.list = action.payload;
       })
       .addCase(fetchSelected.rejected, (state, action) => {
         state.loading = false;
@@ -154,12 +158,12 @@ const templateSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchDetails.fulfilled, (state, action) => {
-        state.loading = false;
         state.template = action.payload;
+        state.loading = false;
       })
       .addCase(fetchDetails.rejected, (state, action) => {
-        state.loading = false;
         state.error = action.payload;
+        state.loading = false;
       });
   },
 });

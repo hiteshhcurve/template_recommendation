@@ -1,3 +1,4 @@
+import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setPage } from "../features/ui/uiSlice";
 import Card from "./Card";
@@ -6,6 +7,7 @@ import Loader from "./Loader";
 
 const Showcase = () => {
   const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
   const { enabled, searchQuery } = useSelector((state) => state.filters);
 
@@ -44,9 +46,13 @@ const Showcase = () => {
           </h2>
         )}
 
-        {enabled && (
+        {enabled ? (
           <h2 className="template-header">
             Showing filtered results: {filtered} / {total}
+          </h2>
+        ) : (
+          <h2 className="template-header">
+            {pathname === "/" ? "Unique templates" : "Showing results"}: {total}
           </h2>
         )}
 

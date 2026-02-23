@@ -17,6 +17,7 @@ import {
   enableFilters,
   resetFilters,
 } from "../features/filters/filterSlice";
+import { setPage } from "../features/ui/uiSlice";
 
 export default function useRouteLoader() {
   const { pathname } = useLocation();
@@ -40,6 +41,8 @@ export default function useRouteLoader() {
   };
 
   useEffect(() => {
+    dispatch(setPage(1));
+
     if (pathname.startsWith("/filter/")) {
       const encoded = pathname.split("/")[2];
       const decoded = safeDecodeJSON(encoded);
@@ -71,11 +74,12 @@ export default function useRouteLoader() {
     if (pathname.startsWith("/template/")) {
       const id = pathname.split("/")[2];
       dispatch(fetchDetails(id));
+      dispatch(enableFilters(false));
       return;
     }
 
     // Default route - fetch all templates
-
+    
     dispatch(fetchTemplates());
     dispatch(fetchClientInfo());
     dispatch(fetchFilters());
