@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setPage } from "../features/ui/uiSlice";
@@ -5,9 +6,11 @@ import Card from "./Card";
 import Pagination from "./Pagination";
 import Loader from "./Loader";
 
-const Showcase = () => {
+const Showcase = ({ isRecommended = false }) => {
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+
+  const [localPage, setLocalPage] = useState(1);
 
   const { enabled, searchQuery } = useSelector((state) => state.filters);
 
@@ -19,7 +22,16 @@ const Showcase = () => {
 
   const { filtered, total } = numberOfTemps;
 
-  const { page } = useSelector((state) => state.ui);
+  const globalPage = useSelector((state) => state.ui.page);
+  const page = isRecommended ? localPage : globalPage;
+
+  const handleSetPage = (p) => {
+    if (isRecommended) {
+      setLocalPage(p);
+    } else {
+      dispatch(setPage(p));
+    }
+  };
 
   if (!data) {
     dispatch(setError("Error loading data!"));
@@ -71,7 +83,7 @@ const Showcase = () => {
         page={page}
         pageSize={pageSize}
         totalItems={totalItems}
-        setPage={(page) => dispatch(setPage(page))}
+        setPage={handleSetPage}
       />
     </>
   );

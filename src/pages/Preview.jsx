@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loader from "../components/Loader";
 import Button from "../components/Button";
 import Showcase from "../components/Showcase";
@@ -13,6 +13,7 @@ import {
   faSliders,
   faEye,
   faCircleDot,
+  faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { fetchSelected } from "../features/templates/templateSlice";
 
@@ -20,6 +21,7 @@ const Preview = () => {
   const { loading, template, list } = useSelector((state) => state.templates);
 
   const dis = useDispatch();
+  const navigate = useNavigate();
 
   const imageLink =
     template?.videos_images !== undefined
@@ -32,7 +34,7 @@ const Preview = () => {
     if (template?.recommended_templates) {
       dis(fetchSelected(template.recommended_templates));
     }
-  }, [template]);
+  }, [template, dis]);
 
   if (loading) {
     return <Loader size="lg" color="#f97316" />;
@@ -41,6 +43,9 @@ const Preview = () => {
   return (
     <>
       <section id="temp_details">
+        <button className="back-btn" onClick={() => navigate(-1)}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
         <h1 className="temp_title">{template?.title.split(" - ")[0]}</h1>
 
         <div className="flex w-full">
@@ -158,7 +163,7 @@ const Preview = () => {
         <section id="recommended">
           <h2 className="section_title">Recommended Templates</h2>
 
-          <Showcase />
+          <Showcase isRecommended={true} />
         </section>
       )}
     </>

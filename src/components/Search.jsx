@@ -1,5 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setPage } from "../features/ui/uiSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import GlobalContext from "../context/GlobalContext";
@@ -9,6 +11,7 @@ const Search = () => {
   const { setLoading } = useContext(GlobalContext);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   return (
     <div className="search-container">
@@ -21,6 +24,7 @@ const Search = () => {
 
             const encodedQuery = btoa(inputValue.trim());
             setLoading(true);
+            dispatch(setPage(1));
             navigate(`/search/${encodedQuery}`);
             setInputValue("");
           }}
