@@ -57,6 +57,14 @@ const FilterModal = ({ isOpen, onClose, onSubmit }) => {
             placeholder="Clients..."
           />
 
+          <MultiSelect
+            placeholder="Marketing Goal"
+            disabled
+            badge="Beta"
+            options={[]}
+            selected={[]}
+          />
+
           <Button
             text="Apply Filters"
             btnType={"primary"}

@@ -14,6 +14,8 @@ const MultiSelect = ({
   onSelectionChange = () => {},
   position = "static",
   forceClose = false,
+  disabled = false,
+  badge = null,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -43,6 +45,7 @@ const MultiSelect = ({
   }, []);
 
   const toggleDropdown = async () => {
+    if (disabled) return;
     setDropdownOpen((prev) => !prev);
 
     // Focus the search box after opening
@@ -70,11 +73,17 @@ const MultiSelect = ({
   );
 
   return (
-    <div className="dropdown" ref={dropdownRef}>
-      <div className="dropdown-btn" onClick={toggleDropdown}>
+    <div className={`dropdown ${disabled ? "disabled" : ""}`} ref={dropdownRef}>
+      <div
+        className={`dropdown-btn ${disabled ? "disabled" : ""}`}
+        onClick={toggleDropdown}
+      >
         <div className="chips-container">
           {selected.length === 0 && (
-            <span className="placeholder">{placeholder}</span>
+            <span className="placeholder">
+              {placeholder}
+              {badge && <span className="beta-badge">{badge}</span>}
+            </span>
           )}
           {selected.map((item) => (
             <div

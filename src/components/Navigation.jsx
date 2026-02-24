@@ -87,6 +87,15 @@ const Navigation = () => {
             position="absolute"
           />
 
+          <MultiSelect
+            placeholder="Marketing Goal"
+            disabled
+            badge="Beta"
+            options={[]}
+            selected={[]}
+            position="absolute"
+          />
+
           <Button
             text="Filter"
             icon={faFilter}
