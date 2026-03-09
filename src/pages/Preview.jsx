@@ -55,7 +55,7 @@ const Preview = () => {
             </div>
 
             <Link
-              to={`https://selfserve.hockeycurve.com/public/adtag/blog3.php?d=${encodedPreview}`}
+              to={`https://selfserve.hockeycurve.com/public/adtag/demo.php?d=${encodedPreview}`}
               target="_blank"
             >
               <Button
