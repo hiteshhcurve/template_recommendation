@@ -1,0 +1,42 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useSelector, useDispatch } from "react-redux";
+import { clearError } from "@/features/ui/uiSlice";
+import { setSelectedTemplates } from "@/features/templates/templateSlice";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
+import Button from "./Button";
+
+const Error = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const { globalError } = useSelector((state) => state.ui);
+  const campaignID = useSelector((state) => state.filters.campaignID);
+
+  const handleClick = (e) => {
+    e.preventDefault();
+
+    const query = {
+      campaign_id: campaignID,
+    };
+
+    const encodedQuery = btoa(JSON.stringify(query));
+
+    dispatch(clearError());
+    dispatch(setSelectedTemplates([]));
+    router.push(`/${encodedQuery}`);
+  };
+
+  return (
+    <div className="error-box">
+      <FontAwesomeIcon icon={faTriangleExclamation} className="error-icon" />
+      <h1 className="error-heading">Oops! Something went wrong!</h1>
+      <h3 className="error-msg">{globalError}</h3>
+      <Button text="Go to Home" btnType="primary" onClick={handleClick} />
+    </div>
+  );
+};
+
+export default Error;
