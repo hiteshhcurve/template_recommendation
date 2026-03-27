@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { setError, setPage } from "@/features/ui/uiSlice";

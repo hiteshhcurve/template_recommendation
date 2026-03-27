@@ -1153,3 +1153,39 @@ a {
     padding: 1.5rem 0;
   }
 }
+
+// Footer Styles
+.site-footer {
+  margin-top: 2rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border);
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-copy {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  .footer-ai-links {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .footer-ai-link {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    opacity: 0.4;
+    transition: opacity 0.2s ease;
+    text-decoration: none;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

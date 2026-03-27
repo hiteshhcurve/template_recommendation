@@ -1,3 +1,36 @@
-# https://www.robotstxt.org/robotstxt.html
+# Allow all standard search engines (Google, Bing, etc.)
 User-agent: *
-Disallow:
+Allow: /
+Sitemap: https://gallery2.hockeycurve.com/sitemap.xml
+
+# 🤖 AI BOT CONFIGURATION
+# These bots are responsible for "scanning and suggesting"
+User-agent: GPTBot
+Allow: /
+Allow: /ai-manifest
+Allow: /llms.txt
+
+User-agent: ChatGPT-User
+Allow: /
+Allow: /ai-manifest
+Allow: /llms.txt
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /ai-manifest
+Allow: /llms.txt
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /ai-manifest
+Allow: /llms.txt
+
+User-agent: Google-Extended
+Allow: /
+Allow: /ai-manifest
+Allow: /llms.txt
+
+# OPTIONAL: Prevent AI from using your content for training, 
+# while still allowing it to browse and recommend your templates.
+# User-agent: CCBot
+# Disallow: /

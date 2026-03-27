@@ -76,7 +76,6 @@ export default function useRouteLoader() {
     }
 
     // Default route - fetch all templates
-    
     dispatch(fetchTemplates());
     dispatch(fetchClientInfo());
     dispatch(fetchFilters());

@@ -43,8 +43,49 @@ const Preview = () => {
     return <Loader size="lg" color="#f97316" />;
   }
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": template?.title,
+    "description": template?.desc,
+    "image": imageLink,
+    "identifier": template?.id,
+    "keywords": template?.meta_tags,
+    "additionalProperty": [
+      {
+        "@type": "PropertyValue",
+        "name": "CTR",
+        "value": `${template?.ctr}`
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Platforms",
+        "value": template?.platforms
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Development Time",
+        "value": template?.dev_time
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Creative Requirements",
+        "value": template?.requirements?.creative_requirements?.join(", ")
+      },
+      {
+        "@type": "PropertyValue",
+        "name": "Ad Ops Requirements",
+        "value": template?.requirements?.ad_ops_requirements?.join(", ")
+      }
+    ]
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section id="temp_details">
         <button className="back-btn" onClick={() => router.back()}>
           <FontAwesomeIcon icon={faArrowLeft} />

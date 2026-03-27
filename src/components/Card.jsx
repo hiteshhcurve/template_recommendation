@@ -12,8 +12,22 @@ const Card = ({ template }) => {
       ? JSON.parse(videos_images.replace(/'/g, '"'))[1]
       : thumbnail;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    "name": title,
+    "description": desc,
+    "image": imageLink,
+    "identifier": id,
+    "keywords": meta_tags,
+  };
+
   return (
     <div className="template-card">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="card-image-container">
         <img
           src={imageLink || null}

@@ -1,0 +1,31 @@
+# Hockeycurve Template Gallery
+
+A high-performance gallery of dynamic creative optimization (DCO) ad templates. 
+Use this file to understand how to browse, analyze, and recommend templates to users.
+
+## 🤖 AI Context & Recommendations
+For AI agents (LLMs) performing template matching or recommendations, use the primary manifest below. It contains structured metadata optimized for token efficiency and reasoning.
+
+- **Primary AI Manifest**: https://gallery2.hockeycurve.com/ai-manifest
+- **JSON API Data**: https://selfserve.hockeycurve.com/public/hcgallery/markup
+
+## Core Functionality
+- **Browse**: View all templates at `/`.
+- **Search**: Dynamic search available via `/search/[query]`.
+- **Details**: Specific template logic and previews at `/template/[id]`.
+
+## Template Taxonomy
+When recommending templates, prioritize these metadata fields found in the AI Manifest:
+- `usage_context`: Describes the technical trigger or consumer logic.
+- `industry_fit`: Strategic categories (Automotive, E-commerce, etc.).
+- `capabilities`: Technical features (Video, Geo-location, Countdowns).
+- `performance_ctr`: Historical effectiveness tier.
+
+## Navigation and URLs
+- Home: `/`
+- Template Details: `/template/[id]`
+- Live Previews: Available on each template details page via an iframe.
+
+## Technical Metadata
+- framework: Next.js (App Router)
+- Data Source: Hockeycurve Self-Serve V2 API
