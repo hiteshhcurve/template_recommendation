@@ -15,6 +15,7 @@ import { faFilter } from "@fortawesome/free-solid-svg-icons";
 import FilterModal from "./FilterModal";
 import MultiSelect from "./MultiSelect";
 import Button from "./Button";
+import Loader from "./Loader";
 
 const Navigation = () => {
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
@@ -24,6 +25,8 @@ const Navigation = () => {
   const { clients, industry_tag1, keywords } = useSelector(
     (state) => state.filters.filters,
   );
+
+  const { loading } = useSelector((state) => state.filters);
 
   const {
     clients: selectedClients,
@@ -54,6 +57,10 @@ const Navigation = () => {
 
     if (isFiltersModalOpen) setIsFiltersModalOpen(false);
   };
+
+  if (loading) {
+    return <Loader size="md" color="#f97316" />;
+  }
 
   return (
     <section className="navigation">

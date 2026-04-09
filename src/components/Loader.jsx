@@ -49,6 +49,28 @@ const Loader = ({ size = "md", color = "#3b82f6" }) => {
 
   return (
     <>
+      <style>
+        {`
+          @keyframes morph {
+            0%, 100% {
+              transform: scale(1) rotate(0deg);
+              border-radius: 4px;
+            }
+            25% {
+              transform: scale(1.2) rotate(45deg);
+              border-radius: 50%;
+            }
+            50% {
+              transform: scale(0.8) rotate(90deg);
+              border-radius: 4px;
+            }
+            75% {
+              transform: scale(1.1) rotate(135deg);
+              border-radius: 50%;
+            }
+          }
+        `}
+      </style>
       <div style={containerStyle}>
         <div style={wrapperStyle}>
           <div style={square1Style} />

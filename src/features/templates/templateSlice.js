@@ -10,7 +10,7 @@ export const fetchTemplates = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Fetch client info
@@ -22,7 +22,7 @@ export const fetchClientInfo = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Search templates
@@ -34,7 +34,7 @@ export const searchTemplates = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Apply filters
@@ -46,7 +46,7 @@ export const applyFilters = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Fetch selected templates
@@ -58,7 +58,7 @@ export const fetchSelected = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 // Get template details
@@ -70,15 +70,15 @@ export const fetchDetails = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const initialState = {
-  list: [],
-  selected: [],
+  list: null,
+  selected: null,
   template: null,
   numberOfTemps: { total: 0, filtered: 0 },
-  loading: false,
+  loading: true,
   error: null,
 };
 

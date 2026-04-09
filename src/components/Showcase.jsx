@@ -35,7 +35,11 @@ const Showcase = ({ isRecommended = false }) => {
     }
   };
 
-  if (!data) {
+  if (loading) {
+    return <Loader size="lg" color="#f97316" />;
+  }
+
+  if (!loading && !data) {
     dispatch(setError("Error loading data!"));
     return null;
   }
@@ -47,10 +51,6 @@ const Showcase = ({ isRecommended = false }) => {
 
   const currentData = data.slice(startIndex, endIndex);
 
-  if (loading) {
-    return <Loader size="lg" color="#f97316" />;
-  }
-
   return (
     <>
       <section id="showcase">
@@ -60,7 +60,7 @@ const Showcase = ({ isRecommended = false }) => {
           </h2>
         )}
 
-        {enabled ? (
+        {data && enabled ? (
           <h2 className="template-header">
             Showing filtered results: {filtered} / {total}
           </h2>

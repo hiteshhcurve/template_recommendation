@@ -1,5 +1,11 @@
 import Preview from "@/components/Preview";
 
 export default function TemplatePage() {
-  return <Preview />;
+  return (
+    <main className="main-content">
+      <div className="container">
+        <Preview />
+      </div>
+    </main>
+  );
 }

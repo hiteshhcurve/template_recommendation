@@ -30,7 +30,7 @@ const initialState = {
   },
   searchQuery: null,
   enabled: false,
-  loading: false,
+  loading: true,
   error: null,
 };
 

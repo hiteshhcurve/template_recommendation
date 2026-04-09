@@ -46,38 +46,38 @@ const Preview = () => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
-    "name": template?.title,
-    "description": template?.desc,
-    "image": imageLink,
-    "identifier": template?.id,
-    "keywords": template?.meta_tags,
-    "additionalProperty": [
+    name: template?.title,
+    description: template?.desc,
+    image: imageLink,
+    identifier: template?.id,
+    keywords: template?.meta_tags,
+    additionalProperty: [
       {
         "@type": "PropertyValue",
-        "name": "CTR",
-        "value": `${template?.ctr}`
+        name: "CTR",
+        value: `${template?.ctr}`,
       },
       {
         "@type": "PropertyValue",
-        "name": "Platforms",
-        "value": template?.platforms
+        name: "Platforms",
+        value: template?.platforms,
       },
       {
         "@type": "PropertyValue",
-        "name": "Development Time",
-        "value": template?.dev_time
+        name: "Development Time",
+        value: template?.dev_time,
       },
       {
         "@type": "PropertyValue",
-        "name": "Creative Requirements",
-        "value": template?.requirements?.creative_requirements?.join(", ")
+        name: "Creative Requirements",
+        value: template?.requirements?.creative_requirements?.join(", "),
       },
       {
         "@type": "PropertyValue",
-        "name": "Ad Ops Requirements",
-        "value": template?.requirements?.ad_ops_requirements?.join(", ")
-      }
-    ]
+        name: "Ad Ops Requirements",
+        value: template?.requirements?.ad_ops_requirements?.join(", "),
+      },
+    ],
   };
 
   return (
@@ -98,18 +98,35 @@ const Preview = () => {
               <img src={imageLink} alt={template?.title} />
             </div>
 
-            <Link
-              href={`https://selfserve.hockeycurve.com/public/adtag/demo.php?d=${encodedPreview}`}
-              target="_blank"
-            >
-              <Button
-                text="View Demo"
-                type={"button"}
-                icon={faEye}
-                btnType="primary"
-                width={"full"}
-              />
-            </Link>
+            <div className="preview-actions">
+              <Link
+                href={`https://selfserve.hockeycurve.com/public/adtag/demo.php?d=${encodedPreview}`}
+                target="_blank"
+              >
+                <Button
+                  text="View Demo"
+                  type={"button"}
+                  icon={faEye}
+                  btnType="primary"
+                  width={"full"}
+                />
+              </Link>
+
+              {template?.special_id && (
+                <Link
+                  href={`https://selfserve.hockeycurve.com/public/adspecial/index.php?id=${template?.special_id}`}
+                  target="_blank"
+                >
+                  <Button
+                    text="View Variations"
+                    type={"button"}
+                    icon={faLayerGroup}
+                    btnType="secondary"
+                    width={"full"}
+                  />
+                </Link>
+              )}
+            </div>
           </div>
 
           <div className="temp_info w-full">
